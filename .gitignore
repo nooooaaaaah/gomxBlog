@@ -21,10 +21,9 @@ Thumbs.db
 # Build output
 dist/
 
-# Package lock files can be ignored if you prefer to regenerate them
-# However, including them is generally a good practice for applications
-# package-lock.json
-# yarn.lock
+# Package lock files
+package-lock.json
+yarn.lock
 
 # Environment files
 .env
@@ -47,6 +46,7 @@ coverage.txt
 # Ignore temporary files
 *.tmp
 *.temp
+*.pidfile
 
 # Ignore cache files used by tools like ESLint
 .eslintcache
