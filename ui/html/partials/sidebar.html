@@ -1,0 +1,48 @@
+<div
+    id="sidebar"
+    class="transform flex w-54 shadow-lg shadow-midnight-900 z-50 bg-midnight-950"
+>
+    <div class="flex flex-col text-center">
+        {{ template "header.html" . }}
+        <nav
+            class="w-52 p-5 h-5/6 mt-9 flex flex-col justify-center items-center font-extrabold"
+        >
+            <ul>
+                {{ range .Links }}
+                <li class="p-5">
+                    <a
+                        class="hover:bg-midnight-900 p-5 rounded-md"
+                        href="{{ .Href }}"
+                        hx-get="{{ .Href }}"
+                        hx-target="#dynamic-content"
+                        hx-push-url="true"
+                        >{{ .Text }}</a
+                    >
+                </li>
+                {{ end }}
+            </ul>
+        </nav>
+    </div>
+    <button
+        id="openSidebarBtn"
+        aria-label="Toggle Sidebar"
+        class="bg-midnight-950 rotate-180 hover:bg-midnight-900"
+    >
+        <!-- SVG for button -->
+        <svg
+            id="chevron-iconClose"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2.5"
+            stroke="#1ed0bf"
+            class="w-6 h-6 stroke-syan-200 shadow-xl shadow-midnight-900"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
+        </svg>
+    </button>
+</div>

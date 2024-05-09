@@ -1,0 +1,41 @@
+<form class="contact-form" action="/submit-contact-form" method="POST">
+    <div class="mb-4">
+        <label for="name" class="block mb-2">Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            placeholder="Your Name"
+            class="w-full px-3 py-2 bg-midnight-900 border-gray-300 rounded-md shadow-sm"
+        />
+    </div>
+    <div class="mb-4">
+        <label for="email" class="block mb-2">Email</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Your Email"
+            class="w-full px-3 py-2 bg-midnight-900 border-gray-300 rounded-md shadow-sm"
+        />
+    </div>
+    <div class="mb-4">
+        <label for="message" class="block mb-2">Message</label>
+        <textarea
+            id="message"
+            name="message"
+            rows="4"
+            required
+            placeholder="Your Message"
+            class="w-full px-3 py-2 bg-midnight-900 border-gray-300 rounded-md shadow-sm"
+        ></textarea>
+    </div>
+    <button
+        type="submit"
+        class="w-full px-3 py-2 bg-midnight-950 text-white rounded-md hover:bg-midnight-900"
+    >
+        Send
+    </button>
+</form>

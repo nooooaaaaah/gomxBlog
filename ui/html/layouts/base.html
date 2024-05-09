@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{.Title}}</title>
+        <link rel="stylesheet" href="/static/css/site.css" />
+    </head>
+    <body class="flex w-screen h-screen bg-midnight-950 text-white">
+        {{ template "sidebar.html" . }}
+        <main
+            id="dynamic-content"
+            class="transition-all duration-300 flex-1 flex-grow mx-auto mt-3 fixed inset-x-10 h-full w-full md:animate-contentShiftLeft"
+        >
+            {{.Content}}
+        </main>
+
+        {{ template "footer.html" . }}
+
+        <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+        <script src="/static/js/refreshMeDaddy.js"></script>
+        <script src="/static/js/sidebarToggle.js"></script>
+    </body>
+</html>
