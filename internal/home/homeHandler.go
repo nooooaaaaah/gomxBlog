@@ -13,11 +13,11 @@ var (
 )
 
 type HomeHandler struct {
-	*base.BaseHandler
+	BaseHandler base.BaseHandlerInterface
 }
 
-func NewHomeHandler(baseHandler *base.BaseHandler) *HomeHandler {
-	return &HomeHandler{baseHandler}
+func NewHomeHandler(baseHandler base.BaseHandlerInterface) *HomeHandler {
+	return &HomeHandler{BaseHandler: baseHandler}
 }
 
 // Home page handler

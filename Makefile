@@ -28,13 +28,19 @@ run-go:
 	@./bin/main >> $(LOGFILE) 2>&1 & echo $$! > .pidfile
 
 # Watches all relevant files for changes
-watch: watch-go watch-css watch-refresh
+watch: watch-go watch-refresh watch-css
 
-# Watches for ui changes to reload browser
+
+# Watches for UI changes to reload the browser
 watch-refresh:
 	@echo "Starting RefreshMeDaddy for live browser reloading..." | tee -a $(LOGFILE)
+	@mkdir -p tmp  # Ensure the directory for logs exists
 	@RefreshMeDaddy -p 6900 -w ./ui -v >> tmp/refresh-watch.log 2>&1 & echo $$! >> .pidfile
-	@echo "RefreshMeDaddy started on port 6900..." | tee -a $(LOGFILE)
+	@if [ $$? -eq 0 ]; then \
+	    echo "RefreshMeDaddy started on port 6900..." | tee -a $(LOGFILE); \
+	else \
+	    echo "Failed to start RefreshMeDaddy" | tee -a $(LOGFILE); \
+	fi
 
 # Watches Go files for changes
 watch-go:
@@ -45,7 +51,7 @@ watch-go:
 # Watches CSS files for changes
 watch-css:
 	@echo "Watching CSS files for changes..." | tee -a $(LOGFILE)
-	@npx tailwindcss --config ./configs/tailwind.config.js -i ./ui/static/css/input.css -o ./ui/static/css/site.css --watch >> tmp/css-watch.log 2>&1 || echo "Failed to watch CSS" >> tmp/css-watch.log echo $$! >> .pidfile
+	@npm run watch-css >> tmp/css-watch.log 2>&1 & echo $$! >> .pidfile
 	@echo "Tailwind CSS watch started..." | tee -a $(LOGFILE)
 
 # Clean up builds and logs

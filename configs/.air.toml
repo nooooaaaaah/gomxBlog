@@ -21,7 +21,9 @@ log = "build-errors.log"
 poll = false
 poll_interval = 0
 post_cmd = []
-pre_cmd = []
+pre_cmd = [
+    "npx tailwindcss --config ./configs/tailwind.config.js -i ./ui/static/css/input.css -o ./ui/static/css/site.css --minify",
+]
 rerun = false
 rerun_delay = 500
 send_interrupt = false

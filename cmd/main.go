@@ -2,6 +2,7 @@ package main
 
 import (
 	"Blog/internal/base"
+	"Blog/internal/blog"
 	"Blog/internal/home"
 	"Blog/pkg/logger"
 	"context"
@@ -13,34 +14,40 @@ import (
 
 	"github.com/joho/godotenv"
 )
-func init() {
-    if err := godotenv.Load(); err != nil {
-        logger.LogError.Println("No .env file found")
-    }
+
+func initConfig() {
+	if err := godotenv.Load(); err != nil {
+		logger.LogError.Println("No .env file found")
+	}
 }
+
 func main() {
+	initConfig()
+
 	partials := []string{
 		"ui/html/layouts/footer.html",
 		"ui/html/layouts/header.html",
 		"ui/html/partials/sidebar.html",
 	}
-	logger.LogInfo.Println("starting")
+	logger.LogInfo.Println("Starting server...")
+
 	baseHandler := base.NewBaseHandler(
 		"ui/html/layouts/base.html",
 		partials...,
 	)
-	logger.LogInfo.Println("created basehandler")
+	homeHandler := home.NewHomeHandler(baseHandler)
+	blogHandler := blog.NewBlogHandler(blog.NewBlogService(), baseHandler)
 	handlers := AppHandlers{
-		baseHandler,
-		home.NewHomeHandler(baseHandler),
+		HomeHandler: homeHandler,
+		BlogHandler: blogHandler,
 	}
-	logger.LogInfo.Println("registered handlers")
-	mux := setupRoutes(handlers)
-	logger.LogInfo.Println("routes are setup")
+	logger.LogInfo.Println("Handlers registered")
 
+	mux := setupRoutes(handlers)
 	port := os.Getenv("PORT")
-      if port == "" {
-          port = "4200" // default port
+	if port == "" {
+		port = "4200" // Default port if not specified in the environment
+	}
 
 	server := &http.Server{
 		Addr:    ":" + port,
@@ -48,10 +55,12 @@ func main() {
 	}
 
 	go func() {
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.LogError.Fatalf("Could not listen on %s: %v\n", port, err)
+		if err := server.ListenAndServe(); err != http.ErrServerClosed {
+			logger.LogError.Fatalf("Could not listen on %s: %v", port, err)
 		}
 	}()
+
+	logger.LogInfo.Println("Server is running on port", port)
 
 	// Graceful shutdown
 	quit := make(chan os.Signal, 1)
@@ -64,5 +73,5 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		logger.LogError.Fatalf("Server forced to shutdown: %v", err)
 	}
-}
+	logger.LogInfo.Println("Server shutdown gracefully")
 }

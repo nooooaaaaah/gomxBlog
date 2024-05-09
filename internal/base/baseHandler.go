@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+type BaseHandlerInterface interface {
+	RenderPage(w http.ResponseWriter, r *http.Request, pageTitle string, contentTemplate *template.Template, partialData interface{})
+	RenderFullPage(w http.ResponseWriter, r *http.Request, pageTitle, content string)
+}
+
 type BaseHandler struct {
 	BaseTemplate *template.Template
 }
@@ -25,8 +30,8 @@ type Link struct {
 	Text string
 }
 
-// Constructor for the BaseHandler
-func NewBaseHandler(baseTemplatePath string, partials ...string) *BaseHandler {
+// NewBaseHandler creates a new instance of BaseHandler with parsed templates.
+func NewBaseHandler(baseTemplatePath string, partials ...string) BaseHandlerInterface {
 	allPaths := append([]string{baseTemplatePath}, partials...)
 	tmpl, err := template.ParseFiles(allPaths...)
 	if err != nil {

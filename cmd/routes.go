@@ -1,20 +1,20 @@
 package main
 
 import (
-	"Blog/internal/base"
+	"Blog/internal/blog"
 	"Blog/internal/home"
 	"Blog/pkg/logger"
 	"net/http"
 )
 
 type AppHandlers struct {
-	BaseHandler *base.BaseHandler
 	HomeHandler *home.HomeHandler
+	BlogHandler *blog.BlogHandler
 }
 
 func setupRoutes(handlers AppHandlers) *http.ServeMux {
 	mux := http.NewServeMux()
-	//Home
+	//HomeHandler routes
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		logger.LogInfo.Println("Serving the HomePage")
 		handlers.HomeHandler.HomePage(w, r)
@@ -32,9 +32,17 @@ func setupRoutes(handlers AppHandlers) *http.ServeMux {
 		handlers.HomeHandler.ContactPage(w, r)
 	})
 
-	// // Blog routes
-	// mux.HandleFunc("/blog", handlers.BlogHandler.ShowBlogPosts)
-	// mux.HandleFunc("/blog/post/", handlers.BlogHandler.ShowBlogPost)
+	// BlogHandler routes
+	mux.HandleFunc("/blogs", func(w http.ResponseWriter, r *http.Request) {
+		logger.LogInfo.Println("Serving the Blogs page")
+		handlers.BlogHandler.AllBlogs(w, r)
+	})
+	mux.HandleFunc("GET /blogs/{id}", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve the 'id' from the path
+		id := r.PathValue("id")
+		logger.LogInfo.Printf("Displaying blog post with ID: %s\n", id)
+		handlers.BlogHandler.BlogByID(w, r)
+	})
 
 	// Serve static files
 	fileServer := http.FileServer(http.Dir("ui/static"))
