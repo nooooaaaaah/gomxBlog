@@ -1,6 +1,6 @@
 <div
     id="sidebar"
-    class="transform flex w-54 shadow-lg shadow-midnight-900 z-50 bg-midnight-950"
+    class="transform flex w-54 shadow-lg shadow-midnight-900 z-50 bg-midnight-950 bg-opacity-75 backdrop-filter backdrop-blur-sm"
 >
     <div class="flex flex-col text-center">
         {{ template "header.html" . }}
@@ -26,7 +26,7 @@
     <button
         id="openSidebarBtn"
         aria-label="Toggle Sidebar"
-        class="bg-midnight-950 rotate-180 hover:bg-midnight-900"
+        class="bg-midnight-950 rotate-180 md:hover:bg-midnight-900 hover:bg-opacity-75 bg-opacity-75 backdrop-filter backdrop-blur-sm"
     >
         <!-- SVG for button -->
         <svg

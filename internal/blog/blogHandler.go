@@ -2,31 +2,31 @@ package blog
 
 import (
 	"Blog/internal/base"
+	"Blog/pkg/db"
 	"Blog/pkg/logger"
 	"html/template"
 	"net/http"
-	"strconv"
+
+	"github.com/edgedb/edgedb-go"
 )
+
+type PageData struct {
+	Posts []db.Post
+}
 
 var (
 	allBlogsTemplate = template.Must(template.ParseFiles("ui/html/pages/blogs.html"))
 	blogTemplate     = template.Must(template.ParseFiles("ui/html/pages/blog.html"))
 )
 
-// blogService defines the interface for our blog service
-type blogService interface {
-	getAllPosts() ([]Post, error)
-	getPostByID(id int) (Post, error)
-}
-
 // BlogHandler holds dependencies for blog routes
 type BlogHandler struct {
 	BaseHandler base.BaseHandlerInterface
-	Service     blogService
+	Service     *BlogService
 }
 
 // NewBlogHandler creates a new blog handler
-func NewBlogHandler(service blogService, baseHandler base.BaseHandlerInterface) *BlogHandler {
+func NewBlogHandler(service *BlogService, baseHandler base.BaseHandlerInterface) *BlogHandler {
 	return &BlogHandler{
 		BaseHandler: baseHandler,
 		Service:     service,
@@ -34,14 +34,25 @@ func NewBlogHandler(service blogService, baseHandler base.BaseHandlerInterface) 
 }
 
 func (h *BlogHandler) AllBlogs(w http.ResponseWriter, r *http.Request) {
-	h.BaseHandler.RenderPage(w, r, "Blogs", allBlogsTemplate, nil)
+	posts, err := h.Service.getAllPosts() // This should return []Post and error
+	if err != nil {
+		logger.LogError.Println("Error fetching blog posts: ", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	pageData := PageData{
+		Posts: posts,
+	}
+
+	h.BaseHandler.RenderPage(w, r, "Blogs", allBlogsTemplate, pageData)
 }
 
 func (h *BlogHandler) BlogByID(w http.ResponseWriter, r *http.Request) {
-	idstr := r.PathValue("id")
-	id, err := strconv.Atoi(idstr)
+	idStr := r.PathValue("id")
+	id, err := edgedb.ParseUUID(idStr)
 	if err != nil {
-		logger.LogError.Println("Invalid Blog Id: ", idstr)
+		logger.LogError.Println("Invalid Blog Id: ", idStr)
 		http.Error(w, "Invalid blog ID", http.StatusBadRequest)
 		return
 	}

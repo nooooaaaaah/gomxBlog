@@ -4,6 +4,7 @@ import (
 	"Blog/internal/base"
 	"Blog/internal/blog"
 	"Blog/internal/home"
+	"Blog/pkg/db"
 	"Blog/pkg/logger"
 	"context"
 	"net/http"
@@ -23,7 +24,8 @@ func initConfig() {
 
 func main() {
 	initConfig()
-
+	db.InitEdgeDB()
+	defer db.CloseEdgeDB()
 	partials := []string{
 		"ui/html/layouts/footer.html",
 		"ui/html/layouts/header.html",

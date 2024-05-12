@@ -1,38 +1,17 @@
+<!-- templates/welcome.html -->
 <div class="flex flex-col items-center justify-center animate-fade-in mt-10">
     <h1 class="text-4xl md:text-6xl font-bold text-peach-200 mb-6 text-center">
-        Welcome!
+        Some blogs!
     </h1>
-    <div class="w-full md:w-3/4 lg:w-1/2">
-        <article class="blog-post">
-            <h2 class="text-2xl font-bold">Blog Title 1</h2>
-            <img src="path/to/image1.jpg" alt="Blog Image 1" class="w-full" />
-            <p class="text-base">Short description of the blog post...</p>
-            <a
-                href="link/to/full/blog1"
-                class="text-blue-500 hover:text-blue-700"
+    <div class="md:w-3/4 lg:w-1/2 mx-auto pl-8">
+        {{ range .Posts }}
+        <article class="p-3">
+            <h2 class="text-2xl font-bold">{{ .Title }}</h2>
+            <p class="text-base">{{ .Description }}</p>
+            <a href="{{ .Link }}" class="text-blue-500 hover:text-blue-700"
                 >Read More</a
             >
         </article>
-        <article class="blog-post">
-            <h2 class="text-2xl font-bold">Blog Title 2</h2>
-            <img src="path/to/image2.jpg" alt="Blog Image 2" class="w-full" />
-            <p class="text-base">Short description of the blog post...</p>
-            <a
-                href="link/to/full/blog2"
-                class="text-blue-500 hover:text-blue-700"
-                >Read More</a
-            >
-        </article>
-        <article class="blog-post">
-            <h2 class="text-2xl font-bold">Blog Title 3</h2>
-            <img src="path/to/image3.jpg" alt="Blog Image 3" class="w-full" />
-            <p class="text-base">Short description of the blog post...</p>
-            <a
-                href="link/to/full/blog3"
-                class="text-blue-500 hover:text-blue-700"
-                >Read More</a
-            >
-        </article>
-        <!-- Add more blog posts as needed -->
+        {{ end }}
     </div>
 </div>

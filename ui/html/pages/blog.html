@@ -1,14 +1,18 @@
-<div class="flex flex-col items-center justify-center mt-10 animate-fade-in">
-    <article>
-        <header>
-            <h1 class="text-4xl md:text-6xl font-bold text-peach-200 mb-3">
-                {{.Title}}
-            </h1>
-            <p class="text-sm text-right">Published on: {{.PublishDate}}</p>
-            <p class="text-sm text-right">Author: {{.Author}}</p>
-        </header>
-        <section class="mt-6">
-            <p>{{.Content}}</p>
+<div class="flex flex-col items-center min-h-screen w-full">
+    <article class="animate-fade-in max-w-5xl px-4 sm:px-6 lg:px-8 mt-10">
+        <h1
+            class="text-4xl md:text-6xl font-bold text-peach-200 mb-6 text-center pl-3"
+        >
+            {{.Title}}
+        </h1>
+        <section class="text-justify pl-5 my-6">
+            <div class="mx-auto">{{.HtmlContent}}</div>
         </section>
+        <div class="text-right text-sm mt-6 mb-10">
+            <p>Published on: {{.PublishedDate}}</p>
+            <p>Author: Nooooaaaaah</p>
+        </div>
     </article>
+    <!-- styles used in the added content -->
+    <div class="text-xl font-semibold my-4 hidden"></div>
 </div>
