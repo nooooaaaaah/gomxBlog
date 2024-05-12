@@ -6,14 +6,6 @@ function toggleSidebar() {
   const newState = isSidebarClosed ? "open" : "closed";
 
   setSidebarAndButtonState(sidebar, openSidebarBtn, newState, mainContent);
-
-  updateUrlParam("sidebar", newState);
-}
-
-function updateUrlParam(param, value) {
-  const url = new URL(window.location);
-  url.searchParams.set(param, value);
-  window.history.pushState({}, "", url);
 }
 
 function setSidebarAndButtonState(sidebar, openSidebarBtn, state, mainContent) {

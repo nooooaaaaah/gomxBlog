@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"html/template"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -23,6 +24,7 @@ type PageData struct {
 	SidebarOpen bool
 	Links       []Link
 	Content     template.HTML
+	IsDev       bool
 }
 
 type Link struct {
@@ -69,6 +71,7 @@ func (bh *BaseHandler) RenderFullPage(w http.ResponseWriter, r *http.Request, pa
 		SidebarOpen: r.URL.Query().Get("sidebar") == "open",
 		Links:       getDefaultLinks(),
 		Content:     template.HTML(content),
+		IsDev:       os.Getenv("GO_ENV") == "development",
 	}
 
 	if err := bh.BaseTemplate.ExecuteTemplate(w, "base.html", data); err != nil {

@@ -22,6 +22,19 @@ module.exports = {
           200: "#febe83",
           600: "#ff6347",
         },
+        "light-text": "#e8f9f7",
+        "border-color": "#2c2f33",
+        keyword: "#8c98f1",
+        string: "#e5c76d",
+        comment: "#616876",
+        "function-keyword": "#5aacc4",
+        tag: "#99ffe4",
+      },
+      borderWidth: {
+        1: "1px",
+      },
+      fontStyle: {
+        italic: "italic",
       },
       translate: {
         "extra-full": "150%", // Example of adding a custom translate value

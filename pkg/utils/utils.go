@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"html/template"
+	"regexp"
 	"strings"
 
 	"github.com/microcosm-cc/bluemonday"
@@ -16,6 +17,7 @@ func MdToHTML(markdownInput string) template.HTML {
 	unsafeHTML := blackfriday.Run([]byte(markdownInput))
 
 	p := bluemonday.UGCPolicy()
+	p.AllowAttrs("class").Matching(regexp.MustCompile("^language-[a-zA-Z0-9]+$")).OnElements("code")
 	safeHTML := p.SanitizeBytes(unsafeHTML)
 
 	doc, err := html.Parse(bytes.NewReader(safeHTML))
