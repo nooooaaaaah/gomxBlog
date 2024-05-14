@@ -1,4 +1,4 @@
-package main
+package routes
 
 import (
 	"Blog/internal/blog"
@@ -12,7 +12,7 @@ type AppHandlers struct {
 	BlogHandler *blog.BlogHandler
 }
 
-func setupRoutes(handlers AppHandlers) *http.ServeMux {
+func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 	mux := http.NewServeMux()
 	//HomeHandler routes
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

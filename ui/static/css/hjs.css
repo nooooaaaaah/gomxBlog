@@ -1,0 +1,47 @@
+pre code {
+    background: none !important; /* Overrides any background style */
+}
+/* General background for the code blocks */
+.hljs {
+    background: #081411; /* dark background */
+    color: #e8f9f7; /* light text */
+    border: 1px solid #0c1f1a; /* border color */
+    font-family: "Monaco", "Courier New", monospace; /* specify monospace font */
+    white-space: pre-wrap; /* Ensures text only breaks at whitespace */
+    word-wrap: break-word; /* Allows long words to be able to break and wrap onto the next line */
+    max-width: calc(1ch * 80); /* restricts width to 80 characters */
+    overflow-x: auto; /* Adds horizontal scrollbar if content exceeds the container width */
+    margin-top: 16px;
+}
+
+/* Syntax Specific Styling */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+    color: #8c98f1; /* keyword color */
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute {
+    color: #e5c76d; /* string color */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+    color: #616876; /* comment color */
+    font-style: italic;
+}
+
+.hljs-function .hljs-keyword {
+    color: #5aacc4;
+}
+
+.hljs-tag {
+    color: #99ffe4;
+}

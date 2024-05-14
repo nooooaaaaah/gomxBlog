@@ -68,6 +68,10 @@ module.exports = {
             backgroundPosition: "right center",
           },
         },
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
         fadeIn: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
@@ -84,6 +88,7 @@ module.exports = {
         },
       },
       animation: {
+        spin: "spin 1s linear infinite",
         slideIn: "slideIn 0.5s ease-out forwards",
         slideOut: "slideOut 0.5s ease-in forwards",
         contentShiftRight: "contentShiftRight 0.5s ease-out forwards",

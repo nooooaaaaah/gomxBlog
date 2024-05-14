@@ -1,4 +1,4 @@
-.PHONY: all prepare build-go build-css run run-go watch watch-go watch-css clean stop
+.PHONY: all prepare build-go build-css run run-go watch watch-go watch-refresh watch-css clean stop
 
 LOGFILE := tmp/build.log
 
@@ -12,12 +12,12 @@ all: prepare build-go build-css
 # Compile Go binaries
 build-go:
 	@echo "Building Go binaries..." | tee -a $(LOGFILE)
-	@go build -o ./bin/main ./src/main.go >> $(LOGFILE) 2>&1 || echo "Go build failed" | tee -a $(LOGFILE)
+	@go build -o ./bin/main ./cmd/main.go >> $(LOGFILE) 2>&1 || { echo "Go build failed" | tee -a $(LOGFILE); exit 1; }
 
 # Compile Tailwind CSS
 build-css:
 	@echo "Compiling Tailwind CSS..." | tee -a $(LOGFILE)
-	@npx tailwindcss -i ./ui/static/css/input.css -o ./ui/static/css/site.css --config ./configs/tailwind.config.js >> $(LOGFILE) 2>&1 || echo "CSS compilation failed" | tee -a $(LOGFILE)
+	@npx tailwindcss -i ./ui/static/css/input.css -o ./ui/static/css/site.css --config ./configs/tailwind.config.js --minify >> $(LOGFILE) 2>&1 || { echo "CSS compilation failed" | tee -a $(LOGFILE); exit 1; }
 
 # The general command to start the application
 run: watch
@@ -28,13 +28,11 @@ run-go:
 	@./bin/main >> $(LOGFILE) 2>&1 & echo $$! > .pidfile
 
 # Watches all relevant files for changes
-watch: watch-go watch-refresh watch-css
-
+watch: prepare watch-go watch-refresh watch-css
 
 # Watches for UI changes to reload the browser
 watch-refresh:
 	@echo "Starting RefreshMeDaddy for live browser reloading..." | tee -a $(LOGFILE)
-	@mkdir -p tmp  # Ensure the directory for logs exists
 	@RefreshMeDaddy -p 6900 -w ./ui -v >> tmp/refresh-watch.log 2>&1 & echo $$! >> .pidfile
 	@if [ $$? -eq 0 ]; then \
 	    echo "RefreshMeDaddy started on port 6900..." | tee -a $(LOGFILE); \
@@ -58,6 +56,7 @@ watch-css:
 clean:
 	@echo "Cleaning up..." | tee -a $(LOGFILE)
 	@rm -rf ./bin/* ./ui/static/css/site.css tmp/* .pidfile
+	@echo "Clean completed." | tee -a $(LOGFILE)
 
 # Stops all processes started for development
 stop:

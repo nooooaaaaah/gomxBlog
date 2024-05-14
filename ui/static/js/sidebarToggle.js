@@ -1,11 +1,14 @@
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const openSidebarBtn = document.getElementById("openSidebarBtn");
-  const isSidebarClosed = sidebar.classList.contains("animate-slideOut");
-  const mainContent = document.getElementById("dynamic-content");
-  const newState = isSidebarClosed ? "open" : "closed";
+// Utility Functions
+function updateSidebarUrl(state) {
+  const url = new URL(window.location);
+  url.searchParams.set("sidebar", state);
+  window.history.replaceState({ path: url.href }, "", url.href);
+}
 
-  setSidebarAndButtonState(sidebar, openSidebarBtn, newState, mainContent);
+// Sidebar Logic
+function getSidebarState() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("sidebar") !== "closed" ? "open" : "closed";
 }
 
 function setSidebarAndButtonState(sidebar, openSidebarBtn, state, mainContent) {
@@ -17,7 +20,26 @@ function setSidebarAndButtonState(sidebar, openSidebarBtn, state, mainContent) {
   mainContent.classList.toggle("animate-contentShiftLeft", state === "closed");
 }
 
-// Add click event listener to the open sidebar button
+function updateUrlWithSidebarState() {
+  const sidebar = document.getElementById("sidebar");
+  const newState = sidebar.classList.contains("animate-slideIn")
+    ? "open"
+    : "closed";
+  updateSidebarUrl(newState);
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const openSidebarBtn = document.getElementById("openSidebarBtn");
+  const mainContent = document.getElementById("dynamic-content");
+  const currentState = getSidebarState();
+  const newState = currentState === "open" ? "closed" : "open";
+
+  setSidebarAndButtonState(sidebar, openSidebarBtn, newState, mainContent);
+  updateSidebarUrl(newState);
+}
+
+// Event Listeners
 document
   .getElementById("openSidebarBtn")
   .addEventListener("click", toggleSidebar);
@@ -25,9 +47,28 @@ document
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const openSidebarBtn = document.getElementById("openSidebarBtn");
-  const urlParams = new URLSearchParams(window.location.search);
-  const sidebarState = urlParams.get("sidebar") || "closed"; // Default to closed if undefined
   const mainContent = document.getElementById("dynamic-content");
 
+  // Determine if the current page is a blog post by checking the URL path
+  const path = window.location.pathname;
+  const isBlogPost =
+    path.startsWith("/blogs/") && path.length > "/blogs/".length;
+
+  // Determine the initial state of the sidebar based on the URL or force it to be closed on blog pages
+  let sidebarState;
+  if (isBlogPost) {
+    sidebarState = "closed"; // Force sidebar to be closed on blog posts
+  } else {
+    // Get the state from URL parameters or default to closed if not specified
+    const urlParams = new URLSearchParams(window.location.search);
+    sidebarState = urlParams.get("sidebar") === "open" ? "open" : "closed";
+  }
+
+  // Set the sidebar and main content to the determined state
   setSidebarAndButtonState(sidebar, openSidebarBtn, sidebarState, mainContent);
+
+  // Optionally update the URL to reflect this forced state
+  if (isBlogPost) {
+    updateSidebarUrl(sidebarState);
+  }
 });

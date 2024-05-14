@@ -8,7 +8,10 @@
         <article class="p-3">
             <h2 class="text-2xl font-bold">{{ .Title }}</h2>
             <p class="text-base">{{ .Description }}</p>
-            <a href="{{ .Link }}" class="text-syan-400 hover:text-syan-200"
+            <a
+                class="text-syan-400 hover:text-syan-200"
+                hx-indicator="#loading-spinner"
+                href="{{ .Link }}"
                 >Read More</a
             >
         </article>

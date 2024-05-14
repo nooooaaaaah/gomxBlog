@@ -6,6 +6,7 @@ import (
 	"Blog/internal/home"
 	"Blog/pkg/db"
 	"Blog/pkg/logger"
+	"Blog/routes"
 	"context"
 	"net/http"
 	"os"
@@ -39,13 +40,13 @@ func main() {
 	)
 	homeHandler := home.NewHomeHandler(baseHandler)
 	blogHandler := blog.NewBlogHandler(blog.NewBlogService(), baseHandler)
-	handlers := AppHandlers{
+	handlers := routes.AppHandlers{
 		HomeHandler: homeHandler,
 		BlogHandler: blogHandler,
 	}
 	logger.LogInfo.Println("Handlers registered")
 
-	mux := setupRoutes(handlers)
+	mux := routes.SetupRoutes(handlers)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "4200" // Default port if not specified in the environment
