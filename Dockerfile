@@ -30,11 +30,8 @@ COPY --from=build /bin/main /bin/main
 COPY --from=build /app/ui/static /ui/static
 COPY --from=build /app/ui/html/ /ui/html
 
-# Environment variables
-COPY --from=build /app/.env.production /.env
-
 # Expose the application port
-EXPOSE 4200
+EXPOSE 80
 
 # Command to run the executable
 ENTRYPOINT ["/bin/main"]

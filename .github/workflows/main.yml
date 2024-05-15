@@ -16,8 +16,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: "1.22" # Update to your Go version
-
+          go-version: "1.22"
       - name: Build Docker image
         run: docker build -t myapp:latest .
 
@@ -25,7 +24,9 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Push Docker image
-        run: docker tag myapp:latest myusername/myapp:latest
+        run: |
+          docker tag myapp:latest myusername/myapp:latest
+          docker push myusername/myapp:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -40,6 +41,10 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
+          EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
+
         run: |
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
           mkdir -p ~/.ssh
@@ -50,4 +55,11 @@ jobs:
             docker pull myusername/myapp:latest
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:80 myusername/myapp:latest
+            docker run -d --name myapp -p 80:80 \
+              -e DATABASE_URL=$DATABASE_URL \
+              myusername/myapp:latest
+            export EDGEDB_INSTANCE="$EDGEDB_INSTANCE"
+            export EDGEDB_SECRET_KEY="$EDGEDB_SECRET_KEY"
+            export GO_ENV=production
+            export PORT=80
+            echo "$EDGEDB_SECRET_KEY" | cloudflared tunnel --config /etc/cloudflared/config.yml run <TUNNEL_UUID>
