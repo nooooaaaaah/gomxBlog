@@ -66,17 +66,6 @@ jobs:
           eval "$(ssh-agent -s)"
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
-          # # Set up known_hosts and cloudflare certificate
-          # mkdir -p ~/.ssh
-          # chmod 700 ~/.ssh
-          # echo "adding kown hosts"
-          # ssh-keyscan "$TUNNEL_HOSTNAME" > ~/.ssh/known_hosts
-
-          # # Debugging: Check the contents of known_hosts
-          # echo "checking known hosts"
-          # echo "Known hosts:" | tee -a /tmp/debug.log
-          # cat ~/.ssh/known_hosts | tee -a /tmp/debug.log
-
           # Debugging: Check the values of environment variables
           echo "SSH_USER: $SSH_USER" | tee -a /tmp/debug.log
           echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
@@ -89,7 +78,7 @@ jobs:
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
           # Authenticate with Cloudflare Access
-          cloudflared access login --url https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET
+          cloudflared access login --url https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET || { echo "Cloudflare login failed"; exit 1; }
 
           # Check if Cloudflare login was successful
           echo "Checking Cloudflare login status..." | tee -a /tmp/debug.log
