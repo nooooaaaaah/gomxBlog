@@ -55,7 +55,6 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
           EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
           CLOUDFLARE_CERT: ${{ secrets.CLOUDFLARE_CERT }}
