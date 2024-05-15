@@ -73,6 +73,14 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan "$SSH_HOST" > ~/.ssh/known_hosts
 
+          # Debugging: Check the contents of known_hosts
+          echo "Known hosts:"
+          cat ~/.ssh/known_hosts
+
+          # Debugging: Check the values of environment variables
+          echo "SSH_HOST: $SSH_HOST"
+          echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME"
+
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
