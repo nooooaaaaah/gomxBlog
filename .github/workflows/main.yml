@@ -53,12 +53,11 @@ jobs:
       - name: Deploy to Ubuntu VM
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_USER: ${{ secrets.SSH_USER }} # tosterhoaster
+          TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }} # p.birdlaw.uk
           EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
           EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
           CLOUDFLARE_CERT: ${{ secrets.CLOUDFLARE_CERT }}
-          TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }}
           CLOUDFLARE_ACCESS_CLIENT_ID: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}
           CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
 
@@ -70,20 +69,18 @@ jobs:
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan "$SSH_HOST" > ~/.ssh/known_hosts
+          ssh-keyscan "$TUNNEL_HOSTNAME" > ~/.ssh/known_hosts
 
           # Debugging: Check the contents of known_hosts
           echo "Known hosts:"
           cat ~/.ssh/known_hosts
 
           # Debugging: Check the values of environment variables
-          echo "SSH_HOST: $SSH_HOST"
+          echo "SSH_USER: $SSH_USER"
           echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME"
 
           # Additional Debugging: Resolve the hostname
           echo "Resolving SSH_HOST:"
-          nslookup "$SSH_HOST"
-          echo "Resolving TUNNEL_HOSTNAME:"
           nslookup "$TUNNEL_HOSTNAME"
 
           mkdir -p ~/.cloudflare
@@ -92,8 +89,12 @@ jobs:
           # Authenticate with Cloudflare Access
           cloudflared access login --url https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET
 
+          # Check if Cloudflare login was successful
+          echo "Checking Cloudflare login status..."
+          cloudflared access token --app=https://$TUNNEL_HOSTNAME || { echo "Cloudflare login failed"; exit 1; }
+
           # Use cloudflared to establish the connection and deploy the application
-          ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
             docker pull nspielman/gomex:latest
             docker stop gomex || true
             docker rm gomex || true
