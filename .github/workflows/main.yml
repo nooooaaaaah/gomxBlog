@@ -72,16 +72,16 @@ jobs:
           ssh-keyscan "$TUNNEL_HOSTNAME" > ~/.ssh/known_hosts
 
           # Debugging: Check the contents of known_hosts
-          echo "Known hosts:"
-          cat ~/.ssh/known_hosts
+          echo "Known hosts:" | tee -a /tmp/debug.log
+          cat ~/.ssh/known_hosts | tee -a /tmp/debug.log
 
           # Debugging: Check the values of environment variables
-          echo "SSH_USER: $SSH_USER"
-          echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME"
+          echo "SSH_USER: $SSH_USER" | tee -a /tmp/debug.log
+          echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
 
           # Additional Debugging: Resolve the hostname
-          echo "Resolving SSH_HOST:"
-          nslookup "$TUNNEL_HOSTNAME"
+          echo "Resolving SSH_HOST:" | tee -a /tmp/debug.log
+          nslookup "$TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
@@ -90,8 +90,8 @@ jobs:
           cloudflared access login --url https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET
 
           # Check if Cloudflare login was successful
-          echo "Checking Cloudflare login status..."
-          cloudflared access token --app=https://$TUNNEL_HOSTNAME || { echo "Cloudflare login failed"; exit 1; }
+          echo "Checking Cloudflare login status..." | tee -a /tmp/debug.log
+          cloudflared access token --app=https://$TUNNEL_HOSTNAME | tee -a /tmp/debug.log || { echo "Cloudflare login failed"; exit 1; }
 
           # Use cloudflared to establish the connection and deploy the application
           ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
