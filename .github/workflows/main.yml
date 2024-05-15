@@ -69,6 +69,7 @@ jobs:
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+          echo "adding kown hosts"
           ssh-keyscan "$TUNNEL_HOSTNAME" > ~/.ssh/known_hosts
 
           # Debugging: Check the contents of known_hosts
