@@ -81,6 +81,12 @@ jobs:
           echo "SSH_HOST: $SSH_HOST"
           echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME"
 
+          # Additional Debugging: Resolve the hostname
+          echo "Resolving SSH_HOST:"
+          nslookup "$SSH_HOST"
+          echo "Resolving TUNNEL_HOSTNAME:"
+          nslookup "$TUNNEL_HOSTNAME"
+
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
