@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: "1.22"
+
       - name: Build Docker image
         run: docker build -t gomex:latest .
 
@@ -33,10 +34,23 @@ jobs:
     needs: build
 
     steps:
+      - name: Install cloudflared
+        run: |
+          curl -L https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-archive-keyring.gpg >/dev/null
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-archive-keyring.gpg] https://pkg.cloudflare.com/cloudflared $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflared.list
+          sudo apt update
+          sudo apt-get install -y cloudflared
+
+      - name: Test cloudflared installation
+        run: |
+          which cloudflared
+          whereis cloudflared
+          cloudflared --version
+
       - name: Install SSH Client
         run: sudo apt-get update && sudo apt-get install -y openssh-client
 
-      - name: Deploy to Alpine VM
+      - name: Deploy to Ubuntu VM
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
@@ -44,6 +58,8 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
           EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
+          CLOUDFLARE_CERT: ${{ secrets.CLOUDFLARE_CERT }}
+          TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }}
 
         run: |
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
@@ -51,7 +67,10 @@ jobs:
           chmod 700 ~/.ssh
           echo "$SSH_HOST" > ~/.ssh/known_hosts
           ssh-keyscan "$SSH_HOST" >> ~/.ssh/known_hosts
-          ssh $SSH_USER@$SSH_HOST << 'EOF'
+          mkdir -p ~/.cloudflare
+          echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
+          cloudflared access ssh --hostname $TUNNEL_HOSTNAME --url ssh://$SSH_HOST
+          ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --url ssh://$SSH_HOST" $SSH_USER@$SSH_HOST << 'EOF'
             docker pull nspielman/gomex:latest
             docker stop gomex || true
             docker rm gomex || true
@@ -62,4 +81,4 @@ jobs:
             export EDGEDB_SECRET_KEY="$EDGEDB_SECRET_KEY"
             export GO_ENV=production
             export PORT=80
-            echo "$EDGEDB_SECRET_KEY" | cloudflared tunnel --config /etc/cloudflared/config.yml run <TUNNEL_UUID>
+          EOF
