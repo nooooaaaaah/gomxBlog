@@ -60,22 +60,31 @@ jobs:
           EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
           CLOUDFLARE_CERT: ${{ secrets.CLOUDFLARE_CERT }}
           TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }}
+          CLOUDFLARE_ACCESS_CLIENT_ID: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_ID }}
+          CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
 
         run: |
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          # Start SSH agent and add the private key
+          eval "$(ssh-agent -s)"
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+
+          # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "$SSH_HOST" > ~/.ssh/known_hosts
-          ssh-keyscan "$SSH_HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan "$SSH_HOST" > ~/.ssh/known_hosts
+
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
-          cloudflared access ssh --hostname $TUNNEL_HOSTNAME --url ssh://$SSH_HOST
-          ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --url ssh://$SSH_HOST" $SSH_USER@$SSH_HOST << 'EOF'
+
+          # Authenticate with Cloudflare Access
+          cloudflared access login --url https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET
+
+          # Use cloudflared to establish the connection and deploy the application
+          ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$SSH_HOST << 'EOF'
             docker pull nspielman/gomex:latest
             docker stop gomex || true
             docker rm gomex || true
             docker run -d --name gomex -p 80:80 \
-              -e DATABASE_URL=$DATABASE_URL \
               nspielman/gomex:latest
             export EDGEDB_INSTANCE="$EDGEDB_INSTANCE"
             export EDGEDB_SECRET_KEY="$EDGEDB_SECRET_KEY"
