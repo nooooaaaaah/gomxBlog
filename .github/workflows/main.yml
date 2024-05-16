@@ -65,13 +65,14 @@ jobs:
           # Start SSH agent and add the private key
           eval "$(ssh-agent -s)"
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-          ls .ssh
 
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/gha
+          ls .ssh
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
