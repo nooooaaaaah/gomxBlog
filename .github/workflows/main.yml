@@ -59,6 +59,7 @@ jobs:
           EDGEDB_SECRET_KEY: ${{ secrets.EDGEDB_SECRET_KEY }}
           CLOUDFLARE_CERT: ${{ secrets.CLOUDFLARE_CERT }}
           CLOUDFLARE_ACCESS_TOKEN: ${{ secrets.CLOUDFLARE_ACCESS_TOKEN }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
 
         run: |
           # Start SSH agent and add the private key
@@ -68,6 +69,9 @@ jobs:
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
