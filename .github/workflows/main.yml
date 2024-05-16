@@ -90,6 +90,7 @@ jobs:
 
           # Use cloudflared to establish the connection and deploy the application
           ssh -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
+            set -x  # Enable script debugging
             docker pull nspielman/gomex:latest
             docker stop gomex || true
             docker rm gomex || true
