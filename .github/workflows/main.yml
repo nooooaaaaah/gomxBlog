@@ -72,7 +72,7 @@ jobs:
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/gha
-          ls .ssh
+          ls ~/.ssh
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
