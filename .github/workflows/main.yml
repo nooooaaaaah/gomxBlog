@@ -53,6 +53,7 @@ jobs:
       - name: Deploy to Ubuntu VM
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PUB_KEY: ${{ secrets.SSH_PUB_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }} # tosterhoaster
           TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }} # p.birdlaw.uk
           EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
@@ -72,6 +73,7 @@ jobs:
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/gha
+          echo "$SSH_PUB_KEY" > ~/.ssh/gha.pub
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
