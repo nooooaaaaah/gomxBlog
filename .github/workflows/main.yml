@@ -66,6 +66,10 @@ jobs:
           eval "$(ssh-agent -s)"
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
+          # Set up known_hosts and cloudflare certificate
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
           # Debugging: Check the values of environment variables
           echo "SSH_USER: $SSH_USER" | tee -a /tmp/debug.log
           echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
@@ -78,23 +82,7 @@ jobs:
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
           # Authenticate with Cloudflare Access
-          login_output=$(cloudflared access login https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET 2>&1)
-
-          echo "Login output: $login_output" | tee -a /tmp/debug.log
-
-          login_url=$(echo "$login_output" | grep -o 'https://.*')
-
-          if [ -z "$login_url" ]; then
-            echo "Failed to generate Cloudflare Access login URL."
-            exit 1
-          fi
-
-          echo "Please visit the following URL to authenticate Cloudflare Access:"
-          echo $login_url
-
-          # Wait for the user to complete the authentication process
-          echo "Waiting for Cloudflare Access authentication..."
-          sleep 30
+          cloudflared access login https://$TUNNEL_HOSTNAME --client-id $CLOUDFLARE_ACCESS_CLIENT_ID --client-secret $CLOUDFLARE_ACCESS_CLIENT_SECRET
 
           # Check if Cloudflare login was successful
           echo "Checking Cloudflare login status..." | tee -a /tmp/debug.log
