@@ -74,8 +74,8 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_idiot
           echo "$SSH_PUB_KEY" > ~/.ssh/id_idiot.pub
-          chmod 600 ~/.ssh/idiot
-          chmod 600 ~/.ssh/idiot.pub
+          chmod 600 ~/.ssh/id_idiot
+          chmod 600 ~/.ssh/id_idiot.pub
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
