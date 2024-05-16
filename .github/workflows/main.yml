@@ -53,7 +53,6 @@ jobs:
       - name: Deploy to Ubuntu VM
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_PUB_KEY: ${{ secrets.SSH_PUB_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }} # tosterhoaster
           TUNNEL_HOSTNAME: ${{ secrets.TUNNEL_HOSTNAME }} # p.birdlaw.uk
           EDGEDB_INSTANCE: ${{ secrets.EDGEDB_INSTANCE }}
@@ -65,23 +64,25 @@ jobs:
         run: |
           # Start SSH agent and add the private key
           eval "$(ssh-agent -s)"
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - || { echo "Failed to add SSH key"; exit 1; }
+
+          # Debugging: List added keys
+          ssh-add -l || { echo "No SSH keys added"; exit 1; }
 
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_idiot
-          echo "$SSH_PUB_KEY" > ~/.ssh/id_idiot.pub
-          chmod 600 ~/.ssh/id_idiot
-          chmod 600 ~/.ssh/id_idiot.pub
 
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
+          # Debugging: Check permissions of SSH files
+          ls -l ~/.ssh
+
           # Use cloudflared to establish the connection and deploy the application
-          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --header CF-Access-Token:$CLOUDFLARE_ACCESS_TOKEN" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
+          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --token $CLOUDFLARE_ACCESS_TOKEN" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
             set -x  # Enable script debugging
             docker pull nspielman/gomex:latest
             docker stop gomex || true
