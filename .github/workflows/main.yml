@@ -68,15 +68,6 @@ jobs:
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-
-          # Debugging: Check the values of environment variables
-          echo "SSH_USER: $SSH_USER" | tee -a /tmp/debug.log
-          echo "TUNNEL_HOSTNAME: $TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
-
-          # Additional Debugging: Resolve the hostname
-          echo "Resolving SSH_HOST:" | tee -a /tmp/debug.log
-          nslookup "$TUNNEL_HOSTNAME" | tee -a /tmp/debug.log
-
           mkdir -p ~/.cloudflare
           echo "$CLOUDFLARE_CERT" > ~/.cloudflare/cert.pem
 
