@@ -67,6 +67,10 @@ jobs:
           eval "$(ssh-agent -s)"
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - || { echo "Failed to add SSH key"; exit 1; }
 
+          # Ensure the SSH key file exists
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_idiot
+          chmod 600 ~/.ssh/id_idiot
+
           # Set up known_hosts and cloudflare certificate
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -80,7 +84,7 @@ jobs:
           ls -l ~/.ssh
 
           # Use cloudflared to establish the connection and deploy the application
-          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME:22 --service-token-id $CLOUDFLARE_ACCESS_SERVICE_TOKEN_ID --service-token-secret $CLOUDFLARE_ACCESS_SERVICE_TOKEN_SECRET" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
+          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --service-token-id $CLOUDFLARE_ACCESS_SERVICE_TOKEN_ID --service-token-secret $CLOUDFLARE_ACCESS_SERVICE_TOKEN_SECRET" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
               set -x  # Enable script debugging
               docker pull nspielman/gomex:latest
               docker stop gomex || true
