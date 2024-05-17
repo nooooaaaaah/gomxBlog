@@ -79,15 +79,15 @@ jobs:
           ls -l ~/.ssh
 
           # Use cloudflared to establish the connection and deploy the application
-          ssh -vvv -i ~/.ssh/id_rsa -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
-          set -x  # Enable script debugging
-          docker pull nspielman/gomex:latest
-          docker stop gomex || true
-          docker rm gomex || true
-          docker run -d --name gomex -p 80:80 \
-            nspielman/gomex:latest
-          export EDGEDB_INSTANCE="$EDGEDB_INSTANCE"
-          export EDGEDB_SECRET_KEY="$EDGEDB_SECRET_KEY"
-          export GO_ENV=production
-          export PORT=80
+          ssh -vvv -i ~/.ssh/id_rsa -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --token $CLOUDFLARE_ACCESS_TOKEN" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
+              set -x  # Enable script debugging
+              docker pull nspielman/gomex:latest
+              docker stop gomex || true
+              docker rm gomex || true
+              docker run -d --name gomex -p 80:80 \
+                nspielman/gomex:latest
+              export EDGEDB_INSTANCE="$EDGEDB_INSTANCE"
+              export EDGEDB_SECRET_KEY="$EDGEDB_SECRET_KEY"
+              export GO_ENV=production
+              export PORT=80
           EOF
