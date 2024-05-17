@@ -80,7 +80,7 @@ jobs:
           ls -l ~/.ssh
 
           # Use cloudflared to establish the connection and deploy the application
-          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME --service-token-id $CLOUDFLARE_ACCESS_SERVICE_TOKEN_ID --service-token-secret $CLOUDFLARE_ACCESS_SERVICE_TOKEN_SECRET" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
+          ssh -vvv -i ~/.ssh/id_idiot -o "ProxyCommand=cloudflared access ssh --hostname $TUNNEL_HOSTNAME:22 --service-token-id $CLOUDFLARE_ACCESS_SERVICE_TOKEN_ID --service-token-secret $CLOUDFLARE_ACCESS_SERVICE_TOKEN_SECRET" $SSH_USER@$TUNNEL_HOSTNAME << 'EOF'
               set -x  # Enable script debugging
               docker pull nspielman/gomex:latest
               docker stop gomex || true
