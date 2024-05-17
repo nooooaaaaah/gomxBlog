@@ -68,12 +68,11 @@ jobs:
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - || { echo "Failed to add SSH key"; exit 1; }
 
           # Ensure the SSH key file exists
+          mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_idiot
           chmod 600 ~/.ssh/id_idiot
 
           # Set up known_hosts and cloudflare certificate
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
           echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
