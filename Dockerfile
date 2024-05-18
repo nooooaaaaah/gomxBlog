@@ -13,6 +13,8 @@ RUN go mod download
 
 # Copy the source code
 COPY . .
+COPY edgedb.toml /app/edgedb.toml
+
 
 # Build the Go app
 RUN go build -o /bin/main ./cmd/main.go
