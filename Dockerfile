@@ -31,7 +31,7 @@ COPY --from=build /app/ui/static /ui/static
 COPY --from=build /app/ui/html/ /ui/html
 
 # Expose the application port
-EXPOSE 80
+EXPOSE 4200
 
 # Command to run the executable
 ENTRYPOINT ["/bin/main"]

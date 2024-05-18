@@ -12,14 +12,23 @@ all: prepare build-go build-css
 # Compile Go binaries
 build-go:
 	@echo "Building Go binaries..." | tee -a $(LOGFILE)
-	@go build -o ./bin/main ./cmd/main.go >> $(LOGFILE) 2>&1 || { echo "Go build failed" | tee -a $(LOGFILE); exit 1; }
+	@go build -o ./bin/blog ./cmd/main.go >> $(LOGFILE) 2>&1 || { echo "Go build failed" | tee -a $(LOGFILE); exit 1; }
 
 # Compile Tailwind CSS
 build-css:
 	@echo "Compiling Tailwind CSS..." | tee -a $(LOGFILE)
 	@npx tailwindcss -i ./ui/static/css/input.css -o ./ui/static/css/site.css --config ./configs/tailwind.config.js --minify >> $(LOGFILE) 2>&1 || { echo "CSS compilation failed" | tee -a $(LOGFILE); exit 1; }
 
-# The general command to start the application
+build-docker:
+	@echo "Building Docker container..." | tee -a $(LOGFILE)
+	@docker build -t gomex . >> $(LOGFILE) 2>&1 || { echo "Docker build failed" | tee -a $(LOGFILE); exit 1; }
+
+push-docker:
+	@echo "Pushing Docker image to Docker Hub..." | tee -a $(LOGFILE)
+	@docker push gomex:latest >> $(LOGFILE) 2>&1 || { echo "Docker push failed" | tee -a $(LOGFILE); exit 1; }
+	# The general command to start the application
+
+
 run: watch
 
 # Specific command to start the Go application
