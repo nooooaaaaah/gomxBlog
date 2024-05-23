@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (isBlogPost) {
     sidebarState = "closed"; // Force sidebar to be closed on blog posts
   } else {
-    // Get the state from URL parameters or default to closed if not specified
+    // Default to open if not a blog post
     const urlParams = new URLSearchParams(window.location.search);
-    sidebarState = urlParams.get("sidebar") === "open" ? "open" : "closed";
+    sidebarState = urlParams.get("sidebar") === "closed" ? "closed" : "open";
   }
 
   // Set the sidebar and main content to the determined state

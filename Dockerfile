@@ -17,7 +17,7 @@ COPY edgedb.toml /app/edgedb.toml
 
 
 # Build the Go app
-RUN go build -o /bin/main ./cmd/main.go
+RUN go build -o /bin/blog ./cmd/main.go
 
 # Stage 2: Create the final image
 FROM alpine:latest
@@ -26,8 +26,8 @@ FROM alpine:latest
 RUN apk add --no-cache ca-certificates
 
 # Copy the built binary from the build stage
-COPY --from=build /bin/main /bin/main
-
+COPY --from=build /bin/blog /bin/main
+RUN rm /ui/static/js/refreshMeDaddy.js
 # Copy static files and templates
 COPY --from=build /app/ui/static /ui/static
 COPY --from=build /app/ui/html/ /ui/html
