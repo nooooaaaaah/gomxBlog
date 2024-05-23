@@ -27,10 +27,11 @@ RUN apk add --no-cache ca-certificates
 
 # Copy the built binary from the build stage
 COPY --from=build /bin/blog /bin/main
-RUN rm /ui/static/js/refreshMeDaddy.js
+
 # Copy static files and templates
 COPY --from=build /app/ui/static /ui/static
 COPY --from=build /app/ui/html/ /ui/html
+RUN rm /ui/static/js/refreshMeDaddy.js
 
 # Expose the application port
 EXPOSE 4200
