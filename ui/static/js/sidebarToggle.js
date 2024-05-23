@@ -67,8 +67,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set the sidebar and main content to the determined state
   setSidebarAndButtonState(sidebar, openSidebarBtn, sidebarState, mainContent);
 
-  // Optionally update the URL to reflect this forced state
-  if (isBlogPost) {
-    updateSidebarUrl(sidebarState);
-  }
+  updateSidebarUrl(sidebarState);
 });
