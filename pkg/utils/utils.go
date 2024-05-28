@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"html/template"
 	"regexp"
-	"strings"
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
@@ -27,9 +26,29 @@ func MdToHTML(markdownInput string) template.HTML {
 
 	var f func(*html.Node)
 	f = func(n *html.Node) {
-		if n.Type == html.ElementNode && strings.HasPrefix(n.Data, "h2") {
-			classAttr := html.Attribute{Key: "class", Val: "text-xl font-semibold my-4"}
-			n.Attr = append(n.Attr, classAttr)
+		if n.Type == html.ElementNode {
+			switch n.Data {
+			case "h1":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "text-3xl font-bold my-6"})
+			case "h2":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "text-3xl font-semibold my-4 text-purp-400"})
+			case "h3":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "text-2xl font-medium my-3 text-syan-200"})
+			case "p":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "my-2 "})
+			case "a":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "text-syan-400 underline"})
+			case "ul":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "list-disc ml-6 my-2"})
+			case "ol":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "list-decimal ml-6 my-2"})
+			case "li":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "my-1"})
+			case "code":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "rounded px-1 py-0.5"})
+			case "pre":
+				n.Attr = append(n.Attr, html.Attribute{Key: "class", Val: "p-4 rounded my-4"})
+			}
 		}
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			f(c)

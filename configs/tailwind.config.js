@@ -86,6 +86,11 @@ module.exports = {
           "0%": { transform: "scale(1)" },
           "100%": { transform: "scale(1.3)" },
         },
+        maxWidth: {
+          "80ch": "80ch",
+          "60ch": "60ch",
+          "40ch": "40ch",
+        },
       },
       animation: {
         spin: "spin 1s linear infinite",
