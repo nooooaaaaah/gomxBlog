@@ -5,7 +5,7 @@ pre code {
     word-wrap: break-word !important; /* Allows long words to break and wrap onto the next line */
     max-width: 100% !important; /* Ensure it uses the full width available */
     overflow-x: auto !important; /* Adds horizontal scrollbar if content exceeds container width */
-    font-size: calc(1em - 1px) !important;
+    font-size: calc(1em - 3px) !important;
 }
 
 /* General background for the code blocks */
@@ -19,7 +19,7 @@ pre code {
     max-width: 100%; /* Restricts width to 100% */
     overflow-x: auto; /* Adds horizontal scrollbar if content exceeds container width */
     margin: 16px;
-    font-size: calc(1em - 1px);
+    font-size: calc(1em - 3px);
 }
 
 .hljs-selector-tag,
