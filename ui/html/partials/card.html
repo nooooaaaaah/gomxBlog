@@ -1,10 +1,16 @@
-<div class="blog-card">
-    <img src="path-to-image.jpg" alt="Blog Image" class="blog-image" />
-    <div class="blog-content">
-        <h3 class="blog-title">Blog Title</h3>
-        <p class="blog-excerpt">
-            This is a short excerpt from the blog post...
-        </p>
-        <a href="link-to-full-blog-post.html" class="read-more">Read More</a>
+<div class="p-4 bg-midnight-900 shadow-md rounded-lg">
+    <img
+        src="{{.GhPro.AvatarURL}}"
+        alt="User Avatar"
+        class="w-16 h-16 rounded-full mx-auto"
+    />
+    <div class="mt-4">
+        <h3 class="text-xl text-purp-400 font-semibold">{{.GhPro.Login}}</h3>
+        <p class="text-gray-500">{{.GhPro.PublicReposCount}} public repos</p>
+        <a
+            href="https://github.com/nooooaaaaah"
+            class="view-profile text-syan-400 hover:text-blue-700 inline-block"
+            >View GitHub Profile</a
+        >
     </div>
 </div>
