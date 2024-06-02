@@ -16,6 +16,7 @@ var (
 
 type HomeHandler struct {
 	BaseHandler base.BaseHandlerInterface
+	Service     *HomeService
 }
 
 type hompageData struct {
@@ -23,27 +24,24 @@ type hompageData struct {
 	PinnedPosts []github.Repo
 }
 
-func NewHomeHandler(baseHandler base.BaseHandlerInterface) *HomeHandler {
-	return &HomeHandler{BaseHandler: baseHandler}
+func NewHomeHandler(service *HomeService, baseHandler base.BaseHandlerInterface) *HomeHandler {
+	return &HomeHandler{
+		BaseHandler: baseHandler,
+		Service:     service,
+	}
 }
 
 // Home page handler
 func (h *HomeHandler) HomePage(w http.ResponseWriter, r *http.Request) {
 
-	login := "nooooaaaaah"
-	ghPro, err := github.GetGitHubProfile(login)
+	ghInfo, err := h.Service.GetCachedGhInfo()
 	if err != nil {
-		logger.LogError.Println("couldnt get gh profile ", err)
+		logger.LogError.Println("Something bad happened ", err)
 	}
 
-	// pinnedPosts, err := github.GetPinnedRepos(login)
-	// if err != nil {
-	// 	logger.LogError.Println("fuck you i guess ", err)
-	// }
-
 	data := hompageData{
-		GhPro: *ghPro,
-		// PinnedPosts: *pinnedPosts,
+		GhPro:       *ghInfo.GhPro,
+		PinnedPosts: ghInfo.PinnedRepos,
 	}
 	h.BaseHandler.RenderPage(w, r, "Home", homeTemplate, data)
 }

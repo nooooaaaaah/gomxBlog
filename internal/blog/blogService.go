@@ -58,8 +58,7 @@ func (s *BlogService) getPostByID(id edgedb.UUID) (*db.Post, error) {
 		return nil, err
 	}
 
-	// Optionally, you could update the cache with this newly fetched post
-	// This step depends on your caching strategy; if you wish to keep the cache strictly once per week,
-	// you might skip updating the cache here.
+	// Update the cache with this newly fetched post
+	s.cachedPosts = append(s.cachedPosts, *post)
 	return post, nil
 }
