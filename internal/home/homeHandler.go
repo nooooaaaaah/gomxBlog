@@ -21,7 +21,7 @@ type HomeHandler struct {
 
 type hompageData struct {
 	GhPro       github.GitHubProfile
-	PinnedPosts []github.Repo
+	PinnedRepos []github.Repo
 }
 
 func NewHomeHandler(service *HomeService, baseHandler base.BaseHandlerInterface) *HomeHandler {
@@ -41,7 +41,7 @@ func (h *HomeHandler) HomePage(w http.ResponseWriter, r *http.Request) {
 
 	data := hompageData{
 		GhPro:       *ghInfo.GhPro,
-		PinnedPosts: ghInfo.PinnedRepos,
+		PinnedRepos: ghInfo.PinnedRepos,
 	}
 	h.BaseHandler.RenderPage(w, r, "Home", homeTemplate, data)
 }

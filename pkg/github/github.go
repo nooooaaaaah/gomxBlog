@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 // GitHubProfile represents a user's GitHub profile.
@@ -17,30 +18,81 @@ type GitHubProfile struct {
 	PublicReposCount int    `json:"public_repos"`
 }
 
-// Repo represents a GitHub repository.
-type Repo struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Stars       int    `json:"stargazers_count"`
-	Forks       int    `json:"forks_count"`
+// License represents the license of a GitHub repository.
+type License struct {
+	Name string `json:"name"`
 }
 
-// GraphQL query to fetch pinned repositories
-const query = `
+// Language represents a language used in a GitHub repository.
+type Language struct {
+	Name string `json:"name"`
+}
+
+// Repo represents a GitHub repository.
+type Repo struct {
+	Name            string    `json:"name"`
+	Description     string    `json:"description"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
+	PushedAt        time.Time `json:"pushed_at"`
+	License         License   `json:"licenseInfo"`
+	OpenIssuesCount int       `json:"open_issues_count"`
+	OpenPRCount     int       `json:"open_pr_count"`
+	WatchersCount   int       `json:"watchers_count"`
+	ForksCount      int       `json:"forks_count"`
+	PrimaryLanguage Language  `json:"primary_language"`
+	Languages       []Language
+	HomepageURL     string `json:"homepage_url"`
+	Topics          []string
+}
+
+// GraphQL query to fetch pinned repositories with additional information.
+const queryTemplate = `
 {
   user(login: "%s") {
     pinnedItems(first: 6, types: REPOSITORY) {
-      totalCount
       edges {
         node {
           ... on Repository {
             name
             description
-            stargazers {
+            createdAt
+            updatedAt
+            pushedAt
+            licenseInfo {
+              name
+            }
+            issues(states: OPEN) {
+              totalCount
+            }
+            pullRequests(states: OPEN) {
+              totalCount
+            }
+            watchers {
               totalCount
             }
             forks {
               totalCount
+            }
+            primaryLanguage {
+              name
+            }
+            languages(first: 5) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+            homepageUrl
+            repositoryTopics(first: 5) {
+              edges {
+                node {
+                  topic {
+                    name
+                  }
+                }
+              }
             }
           }
         }
@@ -49,7 +101,7 @@ const query = `
   }
 }`
 
-// GraphQLResponse represents the response from the GraphQL API
+// GraphQLResponse represents the response from the GraphQL API.
 type GraphQLResponse struct {
 	Data struct {
 		User struct {
@@ -58,12 +110,44 @@ type GraphQLResponse struct {
 					Node struct {
 						Name        string `json:"name"`
 						Description string `json:"description"`
-						Stargazers  struct {
+						CreatedAt   string `json:"createdAt"`
+						UpdatedAt   string `json:"updatedAt"`
+						PushedAt    string `json:"pushedAt"`
+						LicenseInfo struct {
+							Name string `json:"name"`
+						} `json:"licenseInfo"`
+						Issues struct {
 							TotalCount int `json:"totalCount"`
-						} `json:"stargazers"`
+						} `json:"issues"`
+						PullRequests struct {
+							TotalCount int `json:"totalCount"`
+						} `json:"pullRequests"`
+						Watchers struct {
+							TotalCount int `json:"totalCount"`
+						} `json:"watchers"`
 						Forks struct {
 							TotalCount int `json:"totalCount"`
 						} `json:"forks"`
+						PrimaryLanguage struct {
+							Name string `json:"name"`
+						} `json:"primaryLanguage"`
+						Languages struct {
+							Edges []struct {
+								Node struct {
+									Name string `json:"name"`
+								} `json:"node"`
+							} `json:"edges"`
+						} `json:"languages"`
+						HomepageUrl      string `json:"homepageUrl"`
+						RepositoryTopics struct {
+							Edges []struct {
+								Node struct {
+									Topic struct {
+										Name string `json:"name"`
+									} `json:"topic"`
+								} `json:"node"`
+							} `json:"edges"`
+						} `json:"repositoryTopics"`
 					} `json:"node"`
 				} `json:"edges"`
 			} `json:"pinnedItems"`
@@ -92,32 +176,10 @@ func GetGitHubProfile(username string) (*GitHubProfile, error) {
 	return &profile, nil
 }
 
-// GetPinnedRepos fetches a user's pinned GitHub repositories.
+// GetPinnedRepos fetches a user's pinned GitHub repositories with additional information.
 func GetPinnedRepos(username string) ([]Repo, error) {
 	url := "https://api.github.com/graphql"
-	query := fmt.Sprintf(`
-		{
-		  user(login: "%s") {
-		    pinnedItems(first: 6, types: REPOSITORY) {
-		      totalCount
-		      edges {
-		        node {
-		          ... on Repository {
-		            name
-		            description
-		            stargazers {
-		              totalCount
-		            }
-		            forks {
-		              totalCount
-		            }
-		          }
-		        }
-		      }
-		    }
-		  }
-		}
-	`, username)
+	query := fmt.Sprintf(queryTemplate, username)
 	reqBody := fmt.Sprintf(`{"query": %q}`, query)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(reqBody)))
 	if err != nil {
@@ -148,13 +210,36 @@ func GetPinnedRepos(username string) ([]Repo, error) {
 	var repos []Repo
 	for _, edge := range graphqlResponse.Data.User.PinnedItems.Edges {
 		repo := Repo{
-			Name:        edge.Node.Name,
-			Description: edge.Node.Description,
-			Stars:       edge.Node.Stargazers.TotalCount,
-			Forks:       edge.Node.Forks.TotalCount,
+			Name:            edge.Node.Name,
+			Description:     edge.Node.Description,
+			CreatedAt:       parseTime(edge.Node.CreatedAt),
+			UpdatedAt:       parseTime(edge.Node.UpdatedAt),
+			PushedAt:        parseTime(edge.Node.PushedAt),
+			License:         License{Name: edge.Node.LicenseInfo.Name},
+			OpenIssuesCount: edge.Node.Issues.TotalCount,
+			OpenPRCount:     edge.Node.PullRequests.TotalCount,
+			WatchersCount:   edge.Node.Watchers.TotalCount,
+			ForksCount:      edge.Node.Forks.TotalCount,
+			PrimaryLanguage: Language{Name: edge.Node.PrimaryLanguage.Name},
+			HomepageURL:     edge.Node.HomepageUrl,
 		}
+
+		for _, langEdge := range edge.Node.Languages.Edges {
+			repo.Languages = append(repo.Languages, Language{Name: langEdge.Node.Name})
+		}
+
+		for _, topicEdge := range edge.Node.RepositoryTopics.Edges {
+			repo.Topics = append(repo.Topics, topicEdge.Node.Topic.Name)
+		}
+
 		repos = append(repos, repo)
 	}
-	logger.LogInfo.Println(repos)
+
 	return repos, nil
+}
+
+// parseTime is a helper function to parse time from the GitHub GraphQL API.
+func parseTime(timeStr string) time.Time {
+	t, _ := time.Parse(time.RFC3339, timeStr)
+	return t
 }
