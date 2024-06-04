@@ -29,8 +29,12 @@ func CloseEdgeDB() {
 func GetPostByID(id edgedb.UUID) (*Post, error) {
 	var post Post
 	query := "SELECT Post { id, title, content, description, link, published_on } FILTER .id = <uuid>$id;"
-	err := Client.QuerySingle(context.Background(), query, &post, id)
+	params := map[string]interface{}{
+		"id": id,
+	}
+	err := Client.QuerySingle(context.Background(), query, &post, params)
 	if err != nil {
+		logger.LogError.Printf("Error getting post by ID: %v", err)
 		return nil, err
 	}
 	return &post, nil

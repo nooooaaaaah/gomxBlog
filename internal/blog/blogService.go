@@ -10,8 +10,8 @@ import (
 
 // BlogService implements the BlogService interface
 type BlogService struct {
-	lastFetch   time.Time
-	cachedPosts []db.Post
+	LastFetch   time.Time
+	CachedPosts []db.Post
 }
 
 // NewBlogService creates a new blog service
@@ -19,14 +19,14 @@ func NewBlogService() *BlogService {
 	return &BlogService{}
 }
 
-func (s *BlogService) getAllPosts() ([]db.Post, error) {
+func (s *BlogService) GetAllPosts() ([]db.Post, error) {
 	// Get the current year and week number
 	year, week := time.Now().ISOWeek()
 
 	// Check if the cached posts are from the current week
-	yearLF, weekLF := s.lastFetch.ISOWeek()
+	yearLF, weekLF := s.LastFetch.ISOWeek()
 	if yearLF == year && weekLF == week {
-		return s.cachedPosts, nil
+		return s.CachedPosts, nil
 	}
 
 	// Fetch new posts from the database
@@ -37,15 +37,15 @@ func (s *BlogService) getAllPosts() ([]db.Post, error) {
 	}
 
 	// Update cache
-	s.cachedPosts = posts
-	s.lastFetch = time.Now()
+	s.CachedPosts = posts
+	s.LastFetch = time.Now()
 
 	return posts, nil
 }
 
 func (s *BlogService) getPostByID(id edgedb.UUID) (*db.Post, error) {
 	// First check if the post is in the cached posts
-	for _, post := range s.cachedPosts {
+	for _, post := range s.CachedPosts {
 		if post.Id == id {
 			return &post, nil // Return a pointer to the cached post
 		}
@@ -58,8 +58,7 @@ func (s *BlogService) getPostByID(id edgedb.UUID) (*db.Post, error) {
 		return nil, err
 	}
 
-	// Optionally, you could update the cache with this newly fetched post
-	// This step depends on your caching strategy; if you wish to keep the cache strictly once per week,
-	// you might skip updating the cache here.
+	// Update the cache with this newly fetched post
+	s.CachedPosts = append(s.CachedPosts, *post)
 	return post, nil
 }

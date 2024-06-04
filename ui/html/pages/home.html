@@ -1,14 +1,33 @@
-<div class="flex flex-col items-center justify-center mt-10">
-    <h1 class="text-4xl md:text-6xl font-bold text-peach-200 animate-bolden">
-        Welcome!
-    </h1>
-    <div class="mt-6 pl-8">
-        <p
-            class="text-white mx-auto max-w-sm md:max-w-xl break-words animate-fade-in"
-        >
-            Discover engaging stories, professional insights, and explore a
-            palette of resources tailored to elevate your understanding and
-            curiosity.
-        </p>
+<div class="relative w-full h-full">
+    <div class="absolute top-0 left-3 opacity-30 z-10 animate-gopher">
+        <img
+            src="/static/icons/gopher.svg"
+            alt="Go Gopher Mascot"
+            class="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rotate-180"
+        />
     </div>
+    <main class="flex-1 relative">
+        <section
+            class="bg-gradient-to-b from-midnight-800 to-midnight-950 bg-opacity-70 relative"
+        >
+            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+                <div class="grid items-center justify-center text-center">
+                    <h1
+                        class="text-3xl text-peach-200 font-bold tracking-tight sm:text-4xl md:text-5xl mt-10"
+                    >
+                        Welcome
+                    </h1>
+                    <p class="mt-4 text-purp-400 text-opacity-60 text-lg">
+                        Explore the latest insights and musings from a
+                        passionate software engineer.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <div class="flex items-center justify-center min-h-screen">
+            {{template "pinnedRepos.html" .}}
+        </div>
+
+        <div>{{ template "chyron.html" .}}</div>
+    </main>
 </div>
