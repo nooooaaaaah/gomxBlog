@@ -1,12 +1,12 @@
-<section class="">
+<section class="fixed bottom-0 left-0 right-0">
     <div
-        class="fixed bottom-0 left-0 right-3 overflow-hidden h-16 bg-gradient-to-t from-midnight-800 to-midnight-950 bg-opacity-75 text-white rounded-lg flex items-center"
+        class="overflow-hidden h-16 bg-gradient-to-t from-midnight-800 to-midnight-950 bg-opacity-90 text-white rounded-lg flex items-center"
     >
         <div
-            class="absolute flex animate-chyron-scroll-fs md:animate-chyron-scroll-md lg:animate-chyron-scroll-sl xl:animate-chyron-scroll-ssl"
+            class="flex animate-chyron-scroll-fs md:animate-chyron-scroll-md lg:animate-chyron-scroll-sl xl:animate-chyron-scroll-ssl"
         >
             <div class="flex-shrink-0 px-4 whitespace-nowrap align-middle">
-                <span class="font-bold item pr-5">Recent Blog Posts:</span>
+                <span class="font-bold pr-5">Recent Blog Posts:</span>
                 {{ range .Posts }}
                 <div class="inline-flex items-center mr-4">
                     <p class="whitespace-nowrap mr-2">{{ .Title }}</p>

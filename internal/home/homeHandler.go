@@ -12,8 +12,7 @@ import (
 var (
 	homeTemplate = template.Must(template.ParseFiles(
 		"ui/html/pages/home.html",
-		"ui/html/partials/pinnedRepos.html",
-		"ui/html/partials/chyron.html"))
+		"ui/html/partials/pinnedRepos.html"))
 	aboutTemplate   = template.Must(template.ParseFiles("ui/html/pages/about.html"))
 	contactTemplate = template.Must(template.ParseFiles("ui/html/pages/contact.html"))
 )
