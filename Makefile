@@ -12,10 +12,8 @@ all: prepare build-go build-css
 # Compile Go binaries
 LOGFILE=tmp/build.log
 build-go:
-	@mkdir -p tmp
-	@echo "Building Go binaries..." | tee -a $(LOGFILE)
-	@touch tmp/build.log
-	@go build -o ./bin/blog ./cmd/main.go >> $(LOGFILE) 2>&1 || { echo "Go build failed" | tee -a $(LOGFILE); cat $(LOGFILE); exit 1; }
+	@echo "Building Go binaries..."
+	@go build -o ./bin/blog ./cmd/main.go
 
 # Compile Tailwind CSS
 build-css:
