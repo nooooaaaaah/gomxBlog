@@ -10,7 +10,6 @@ prepare:
 all: prepare build-go build-css
 
 # Compile Go binaries
-LOGFILE=tmp/build.log
 build-go:
 	@echo "Building Go binaries..."
 	@go build -o ./bin/blog ./cmd/main.go
