@@ -74,6 +74,7 @@ func (bh *BaseHandler) RenderFullPage(w http.ResponseWriter, r *http.Request, pa
 		IsDev:       os.Getenv("GO_ENV") == "development",
 	}
 
+	logger.LogInfo.Printf("Rendering full page with title: %s", pageTitle)
 	if err := bh.BaseTemplate.ExecuteTemplate(w, "base.html", data); err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		logger.LogError.Printf("Error executing base template: %v", err)

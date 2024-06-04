@@ -34,7 +34,7 @@ func NewBlogHandler(service *BlogService, baseHandler base.BaseHandlerInterface)
 }
 
 func (h *BlogHandler) AllBlogs(w http.ResponseWriter, r *http.Request) {
-	posts, err := h.Service.getAllPosts() // This should return []Post and error
+	posts, err := h.Service.GetAllPosts() // This should return []Post and error
 	if err != nil {
 		logger.LogError.Println("Error fetching blog posts: ", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

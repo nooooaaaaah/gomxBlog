@@ -1,6 +1,8 @@
 package home
 
 import (
+	"Blog/internal/blog"
+	"Blog/pkg/db"
 	"Blog/pkg/github"
 	"Blog/pkg/logger"
 	"time"
@@ -9,6 +11,7 @@ import (
 type HomeService struct {
 	lastFetch time.Time
 	cachedGh  GhInfoCache
+	bs        *blog.BlogService
 }
 
 type GhInfoCache struct {
@@ -16,8 +19,8 @@ type GhInfoCache struct {
 	PinnedRepos []github.Repo
 }
 
-func NewHomeService() *HomeService {
-	return &HomeService{}
+func NewHomeService(bs *blog.BlogService) *HomeService {
+	return &HomeService{bs: bs}
 }
 
 func (s *HomeService) ghProfile() (*github.GitHubProfile, error) {
@@ -65,4 +68,12 @@ func (s *HomeService) GetCachedGhInfo() (*GhInfoCache, error) {
 	s.lastFetch = time.Now()
 
 	return &s.cachedGh, nil
+}
+
+func (s *HomeService) getBlogs() ([]db.Post, error) {
+	posts, err := s.bs.GetAllPosts()
+	if err != nil {
+		logger.LogError.Println("Error Getting posts for homepage:", err)
+	}
+	return posts, nil
 }

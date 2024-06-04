@@ -3,39 +3,31 @@
         <img
             src="/static/icons/gopher.svg"
             alt="Go Gopher Mascot"
-            class="w-52 h-52 rotate-180"
+            class="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rotate-180"
         />
     </div>
     <main class="flex-1 relative">
         <section
-            class="bg-gradient-to-b from-midnight-800 to-midnight-950 bg-opacity-70 py-12 md:py-16 lg:py-20 relative"
+            class="bg-gradient-to-b from-midnight-800 to-midnight-950 bg-opacity-70 relative"
         >
             <div class="container mx-auto px-4 md:px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h1
-                            class="text-3xl text-peach-200 font-bold tracking-tight sm:text-4xl md:text-5xl"
-                        >
-                            Welcome
-                        </h1>
-                        <p class="mt-4 text-purp-400 text-opacity-60 text-lg">
-                            Explore the latest insights and musings from a
-                            passionate software engineer.
-                        </p>
-                    </div>
-                    <div class="ml-auto">
-                        <img
-                            src="{{.GhPro.AvatarURL}}"
-                            alt="Author"
-                            width="300"
-                            height="300"
-                            style="aspect-ratio: 300 / 300; object-fit: cover"
-                            class="rounded-full"
-                        />
-                    </div>
+                <div class="grid items-center justify-center text-center">
+                    <h1
+                        class="text-3xl text-peach-200 font-bold tracking-tight sm:text-4xl md:text-5xl mt-10"
+                    >
+                        Welcome
+                    </h1>
+                    <p class="mt-4 text-purp-400 text-opacity-60 text-lg">
+                        Explore the latest insights and musings from a
+                        passionate software engineer.
+                    </p>
                 </div>
             </div>
         </section>
-        <div class="">{{template "card.html" .}}</div>
+        <div class="flex items-center justify-center min-h-screen">
+            {{template "pinnedRepos.html" .}}
+        </div>
+
+        <div>{{ template "chyron.html" .}}</div>
     </main>
 </div>

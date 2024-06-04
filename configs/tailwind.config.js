@@ -60,6 +60,10 @@ module.exports = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(calc(-100% + 24px))" }, // Leave button visible
         },
+        "chyron-scroll": {
+          "0%": { transform: "translateX(100vw)" },
+          "100%": { transform: "translateX(-100vw)" },
+        },
         tentShiftRight: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(40px)" }, // Shift right by the sidebar width
@@ -99,6 +103,10 @@ module.exports = {
         },
       },
       animation: {
+        "chyron-scroll-ssl": "chyron-scroll 45s linear infinite",
+        "chyron-scroll-sl": "chyron-scroll 35s linear infinite",
+        "chyron-scroll-md": "chyron-scroll 25s linear infinite",
+        "chyron-scroll-fs": "chyron-scroll 15s linear infinite",
         gopher: "gopher 5s ease-out forwards",
         slideIn: "slideIn 0.5s ease-out forwards",
         slideOut: "slideOut 0.5s ease-in forwards",
