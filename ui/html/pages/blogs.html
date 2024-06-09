@@ -3,7 +3,9 @@
     <h1 class="text-4xl md:text-6xl font-bold text-peach-200 mb-6 text-center">
         Some blogs!
     </h1>
-    <div class="md:w-3/4 lg:w-1/2 mx-auto pl-8">
+    <div
+        class="bg-midnight-900 bg-opacity-35 break-words shadow-2xl p-5 rounded-lg backdrop-blur-lg"
+    >
         {{ range .Posts }}
         <article class="p-3">
             <h2 class="text-2xl font-bold">{{ .Title }}</h2>

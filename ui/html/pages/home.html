@@ -1,33 +1,54 @@
-<div class="relative w-full h-full">
-    <div class="absolute top-0 left-3 opacity-30 z-10 animate-gopher">
-        <img
-            src="/static/icons/gopher.svg"
-            alt="Go Gopher Mascot"
-            class="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rotate-180"
-        />
-    </div>
-    <main class="flex-1 relative">
-        <section
-            class="bg-gradient-to-b from-midnight-800 to-midnight-950 bg-opacity-70 relative"
+<div class="relative py-10">
+    <div class="grid items-center justify-center text-center">
+        <h1
+            class="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-peach-300 via-peach-200 font-bold sm:text-4xl md:text-6xl tracking-tighter"
         >
-            <div class="container mx-auto px-4 md:px-6 lg:px-8">
-                <div class="grid items-center justify-center text-center">
-                    <h1
-                        class="text-3xl text-peach-200 font-bold tracking-tight sm:text-4xl md:text-5xl mt-10"
-                    >
-                        Welcome
-                    </h1>
-                    <p class="mt-4 text-purp-400 text-opacity-60 text-lg">
-                        Explore the latest insights and musings from a
-                        passionate software engineer.
-                    </p>
-                </div>
-            </div>
-        </section>
+            Welcome
+        </h1>
 
-        <!-- Main content section -->
-        <div class="flex items-center justify-center min-h-screen">
-            {{template "pinnedRepos.html" .}}
+        <div
+            class="mt-4 text-purp-200 text-lg text-justify mx-auto max-w-prose bg-midnight-900 bg-opacity-35 leading-relaxed break-words shadow-2xl p-5 rounded-lg animate-grow backdrop-blur-lg"
+        >
+            <p class="font-extrabold text-2xl mb-4 text-peach-300">
+                Welcome! 👋
+            </p>
+            <p class="font-semibold">
+                I'm glad you're here! My name is Noah, and this is my little
+                corner of the web. Feel free to explore and get to know more
+                about what I do and what interests me.
+            </p>
+            <p class="mt-4 font-semibold">
+                You can check out my blog posts where I share insights on
+                various topics, from tech and coding to my adventures in the
+                mountains and beyond. I love discussing software engineering,
+                particularly with <span class="text-peach-400">Go</span> and
+                <span class="text-purple-400">C#</span>, and sharing tips on
+                building robust backend systems and applications.
+            </p>
+            <p class="mt-4 font-semibold">
+                Whether you're interested in my tech projects or just want to
+                read about my latest thoughts and experiences, there's something
+                here for everyone. Browse around, and don't hesitate to reach
+                out if you have any questions or just want to connect.
+            </p>
+            <p class="mt-4 font-semibold">
+                Dive into my
+                <a href="/blogs" class="text-peach-400 underline">blog</a>,
+                explore my projects, and enjoy your stay. Happy browsing!
+            </p>
+            <p class="mt-4 font-semibold text-peach-300">
+                Need help building an app or website?
+                <a
+                    href="mailto:nspielman96@gmail.com"
+                    class="text-peach-400 underline"
+                    >Message me</a
+                >
+                – I’d love to help bring your ideas to life!
+            </p>
         </div>
-    </main>
+
+        <div class="flex items-center justify-center mt-10">
+            {{ template "pinnedRepos.html" . }}
+        </div>
+    </div>
 </div>

@@ -1,33 +1,33 @@
-<section class="">
-    <div class="container px-4 md:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-6">
-            <div class="bg-black text-white p-6 rounded-lg max-w-7xl font-mono">
-                <div class="flex justify-between items-center">
-                    <div class="flex space-x-2">
-                        <div class="bg-cyan-200 h-3 w-3 rounded-full"></div>
-                        <div class="bg-purple-400 h-3 w-3 rounded-full"></div>
-                        <div class="bg-peach-600 h-3 w-3 rounded-full"></div>
-                    </div>
-                    <p class="text-sm">zsh</p>
-                </div>
-                <div class="mt-4">
-                    {{ range .PinnedRepos }}
-                    <div class="mb-4">
-                        <p class="text-green-400">$ cd {{.Name}}</p>
-                        <p class="text-white lowercase">
-                            + {{ range .Languages}} {{.Name}} {{end}}
-                        </p>
-                        <p class="text-white">{{.Description}}</p>
-                        <a
-                            class="text-green-400 break-all"
-                            href="https://github.com/nooooaaaaah/{{.Name}}"
-                            >$ git clone
-                            https://github.com/nooooaaaaah/{{.Name}}.git</a
+<section class="py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold text-light-text mb-8">
+            Some Side Projects of Mine
+        </h2>
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 shadow-2xl backdrop-blur-lg p-4 rounded-lg bg-midnight-900 bg-opacity-50"
+        >
+            {{ range .PinnedRepos }}
+            <a
+                href="https://github.com/nooooaaaaah/{{ .Name }}"
+                class="block p-6 bg-midnight-800 bg-opacity-70 border border-midnight-700 rounded-md hover:bg-opacity-90 transition duration-300 ease-in-out shadow-lg backdrop-blur-md transform hover:scale-105"
+            >
+                <h3 class="text-lg font-medium mb-2 text-peach-300">
+                    {{ .Name }}
+                </h3>
+                <p class="text-gray-400 mb-4">{{ .Description }}</p>
+                <div class="text-gray-500 text-sm mb-4">
+                    Languages:
+                    <span class="font-normal">
+                        {{ range .Languages }}
+                        <span
+                            class="inline-block bg-gray-700 bg-opacity-60 rounded px-2 py-1 text-xs text-gray-300"
+                            >{{ .Name }}</span
                         >
-                    </div>
-                    {{ end }}
+                        {{ end }}
+                    </span>
                 </div>
-            </div>
+            </a>
+            {{ end }}
         </div>
     </div>
 </section>

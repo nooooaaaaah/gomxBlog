@@ -17,16 +17,48 @@
         </script>
         <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
     </head>
-    <body class="flex w-screen h-screen bg-midnight-950 text-white">
-        {{ template "sidebar.html" . }}
+    <body
+        class="flex flex-col w-full min-h-screen bg-midnight-950 text-white relative"
+    >
+        <!-- Background Gradient -->
+        <div
+            class="fixed inset-0 bg-gradient-to-bl from-midnight-400 via-midnight-700 to-midnight-950 opacity-20 transform -rotate-45 scale-150 -z-10"
+        ></div>
 
+        <!-- Cool Rectangle -->
+        <div
+            class="fixed top-1/3 left-0 w-full h-32 bg-gradient-to-r from-syan-200 via-purple-400 to-peach-200 opacity-30 transform rotate-6 -z-10"
+        ></div>
+        <!-- Random Rectangle 1 -->
+        <div
+            class="fixed top-1/4 right-0 w-64 h-16 bg-gradient-to-r from-red-200 via-yellow-300 to-green-200 opacity-40 transform -rotate-3 -z-10"
+        ></div>
+        <!-- Random Rectangle 2 -->
+        <div
+            class="fixed bottom-1/3 left-0 w-48 h-24 bg-gradient-to-r from-blue-200 via-indigo-400 to-purple-200 opacity-25 transform rotate-12 -z-10"
+        ></div>
+        <!-- Random Rectangle 3 -->
+        <div
+            class="fixed bottom-10 right-0 w-80 h-20 bg-gradient-to-r from-pink-200 via-orange-300 to-yellow-200 opacity-35 transform -rotate-8 -z-10"
+        ></div>
+
+        <div class="fixed top-0 left-0 w-full z-50">
+            {{ template "navbar.html" . }}
+        </div>
+        <div class="absolute top-0 left-3 opacity-0 z-0 animate-gopher">
+            <img
+                src="/static/icons/gopher.svg"
+                alt="Go Gopher Mascot"
+                class="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rotate-180"
+            />
+        </div>
         <main
             id="dynamic-content"
-            class="transition-all duration-300 flex-1 fixed inset-x-1 h-full w-full lg:animate-none overflow-y-auto animate-contentShiftRight"
+            class="flex-grow relative p-4 sm:p-8 lg:p-12 overflow-auto shadow-lg mx-4 md:mx-12 lg:mx-24 my-12"
         >
             {{.Content}}
         </main>
-        </div>
+
         {{ template "footer.html" . }} {{ if .IsDev }}
         <script src="/static/js/refreshMeDaddy.js"></script>
         {{ end }}

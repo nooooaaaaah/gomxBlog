@@ -4,5 +4,8 @@
   },
   "scripts": {
     "watch-css": "tailwindcss -i ./ui/static/css/input.css -o ./ui/static/css/output.css --watch"
+  },
+  "dependencies": {
+    "tailwindcss-filters": "^3.0.0"
   }
 }

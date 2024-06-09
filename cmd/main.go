@@ -30,7 +30,7 @@ func main() {
 	partials := []string{
 		"ui/html/layouts/footer.html",
 		"ui/html/layouts/header.html",
-		"ui/html/partials/sidebar.html",
+		"ui/html/layouts/navbar.html",
 	}
 	logger.LogInfo.Println("Starting server...")
 
