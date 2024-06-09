@@ -4,18 +4,16 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{.Title}}</title>
-        <link rel="stylesheet" href="/static/css/site.css" />
+        <!-- Your custom Highlight.js theme -->
+        <link rel="stylesheet" href="/static/css/custom-hljs-theme.css" />
+        <!-- Highlight.js styles -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"
         />
+        <!-- Other scripts and styles -->
+        <link rel="stylesheet" href="/static/css/site.css" />
         <link rel="stylesheet" href="/static/css/hjs.css" />
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
-        <script>
-            hljs.highlightAll();
-        </script>
-        <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
     </head>
     <body
         class="flex flex-col w-full min-h-screen bg-midnight-950 text-white relative"
@@ -24,7 +22,6 @@
         <div
             class="fixed inset-0 bg-gradient-to-bl from-midnight-400 via-midnight-700 to-midnight-950 opacity-20 transform -rotate-45 scale-150 -z-10"
         ></div>
-
         <!-- Cool Rectangle -->
         <div
             class="fixed top-1/3 left-0 w-full h-32 bg-gradient-to-r from-syan-200 via-purple-400 to-peach-200 opacity-30 transform rotate-6 -z-10"
@@ -63,5 +60,10 @@
         <script src="/static/js/refreshMeDaddy.js"></script>
         {{ end }}
         <script src="/static/js/site.js"></script>
+        <!-- Highlight.js scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+        <!-- Line Numbers plugin script -->
+        <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script>
+        <!-- Script to initialize Highlight.js and line numbers -->
     </body>
 </html>

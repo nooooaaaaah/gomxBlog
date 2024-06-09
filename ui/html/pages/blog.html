@@ -8,17 +8,21 @@
             {{.Title}}
         </h1>
         <section
-            class="l-5 my-6 text-justify mx-auto bg-midnight-900 bg-opacity-35 leading-relaxed break-words shadow-2xl p-5 rounded-lg animate-grow backdrop-blur-lg"
+            class="l-5 my-6 text-justify mx-auto bg-midnight-900 bg-opacity-40 leading-relaxed break-words shadow-2xl p-5 rounded-lg animate-grow backdrop-blur-xl"
         >
-            <div class="mx-auto break-words">{{.HtmlContent}}</div>
+            <div class="mx-auto break-words" id="content" hx-get="/get-content">
+                {{.HtmlContent}}
+            </div>
         </section>
         <div class="text-right text-sm mt-6 mb-10">
             <p>Published on: {{.PublishedDate}}</p>
             <p>Author: Nooooaaaaah</p>
         </div>
+        <div
+            class="text-3xl text-2xl font-bold my-6 text-xl font-semibold my-4 text-lg font-medium my-3 my-2 text-syan-200 text-purp-400 underline list-disc ml-6 my-2 list-decimal ml-6 my-2 my-1 px-1 py-0.5 text-white p-4 rounded my-4 hidden"
+        ></div>
     </article>
-    <!-- styles used in the added content -->
-    <div
-        class="text-3xl text-2xl font-bold my-6 text-xl font-semibold my-4 text-lg font-medium my-3 my-2 text-syan-200 text-purp-400 underline list-disc ml-6 my-2 list-decimal ml-6 my-2 my-1 px-1 py-0.5 text-white p-4 rounded my-4 hidden"
-    ></div>
+    <!-- Add copy button for each code block -->
 </div>
+
+<script></script>

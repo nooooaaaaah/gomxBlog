@@ -1,41 +1,61 @@
-/* Override background for pre code elements */
 pre code {
+    padding: 0 !important;
     background: none !important;
-    white-space: pre-wrap !important; /* Ensures text only breaks at whitespace */
-    word-wrap: break-word !important; /* Allows long words to break and wrap onto the next line */
-    max-width: 100% !important; /* Ensure it uses the full width available */
-    overflow-x: auto !important; /* Adds horizontal scrollbar if content exceeds container width */
-    font-size: calc(1em - 3px) !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    font-size: calc(1em - 2px) !important;
+    position: relative !important;
 }
 
-/* General background for the code blocks */
 .hljs {
-    background: #081411; /* Dark background */
-    color: #e8f9f7; /* Light text */
-    border: 1px solid #0c1f1a; /* Border color */
-    font-family: "Monaco", "Courier New", monospace; /* Specify monospace font */
-    white-space: pre-wrap; /* Ensures text only breaks at whitespace */
-    word-wrap: break-word; /* Allows long words to break and wrap onto the next line */
-    max-width: 100%; /* Restricts width to 100% */
-    overflow-x: auto; /* Adds horizontal scrollbar if content exceeds container width */
-    margin: 16px;
-    font-size: calc(1em - 3px);
+    margin-top: 1em !important;
+    color: #e8f9f7 !important;
+    font-family: "Monaco", monospace !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    font-size: calc(1em - 2px) !important;
+}
+
+.hljs-ln-line .hljs-ln-numbers {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 4em !important;
+    background: #081411 !important;
+    color: #616876 !important;
+    text-align: right !important;
+    padding-right: 0.5em !important;
+    border-right: 1px solid #616876 !important;
+    box-sizing: border-box !important;
+}
+
+.hljs-ln-numbers {
+    display: block !important;
+    user-select: none !important;
+    padding-right: 0.5em !important;
+    color: #274f4e;
 }
 
 .hljs-selector-tag,
 .hljs-literal,
 .hljs-section,
 .hljs-link {
-    color: #8c98f1; /* Keyword color */
+    color: #8c98f1 !important;
 }
 
 .hljs-number {
-    color: #d9a37e;
+    color: #d9a37e !important;
 }
 
 .hljs-keyword,
 .hljs-built_in {
-    color: #1ed0bf;
+    color: #1ed0bf !important;
 }
 
 .hljs-string,
@@ -43,50 +63,50 @@ pre code {
 .hljs-name,
 .hljs-type,
 .hljs-attribute {
-    color: #e5c76d; /* String color */
+    color: #e5c76d !important;
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-meta {
-    color: #616876; /* Comment color */
-    font-style: italic;
+    color: #616876 !important;
+    font-style: italic !important;
 }
 
 .hljs-function .hljs-keyword {
-    color: #5aacc4;
+    color: #5aacc4 !important;
 }
 
 .hljs-tag {
-    color: #99ffe4;
+    color: #99ffe4 !important;
 }
 
 .hljs-subst {
-    color: #f7e8b7; /* Substitution color */
+    color: #f7e8b7 !important;
 }
 
 .hljs-symbol,
 .hljs-bullet,
 .hljs-code,
 .hljs-deletion {
-    color: #ff6f61; /* Symbol and deletion color */
+    color: #ff6f61 !important;
 }
 
 .hljs-addition {
-    color: #a8ff60; /* Addition color */
+    color: #a8ff60 !important;
 }
 
 .hljs-attribute,
 .hljs-variable,
 .hljs-template-variable,
 .hljs-class .hljs-title {
-    color: #ffcb6b; /* Attribute and variable color */
+    color: #ffcb6b !important;
 }
 
 .hljs-emphasis {
-    font-style: italic; /* Emphasis style */
+    font-style: italic !important;
 }
 
 .hljs-strong {
-    font-weight: bold; /* Strong style */
+    font-weight: bold !important;
 }
