@@ -26,13 +26,12 @@
                 class="space-y-4 text-center mt-16 bg-midnight-800 p-4 rounded-md"
             >
                 {{ range .Links }}
-                <li>
+                <li class="p-3">
                     <a
-                        class="text-light-text text-xl hover:bg-midnight-900 hover:bg-opacity-70 p-6 md:p-4 rounded-md transition-colors duration-300 ease-in-out"
+                        class="text-light-text text-xl hover:bg-midnight-900 hover:bg-opacity-70 p-3 pl-6 pr-6 md:p-4 rounded-md transition-colors duration-300 ease-in-out"
                         href="{{ .Href }}"
                         hx-get="{{ .Href }}"
                         hx-target="#dynamic-content"
-                        hx-on::after-request="updateUrlWithSidebarState()"
                         hx-push-url="{{ .Href }}"
                         >{{ .Text }}</a
                     >
@@ -48,7 +47,6 @@
                     href="{{ .Href }}"
                     hx-get="{{ .Href }}"
                     hx-target="#dynamic-content"
-                    hx-on::after-request="updateUrlWithSidebarState()"
                     hx-push-url="{{ .Href }}"
                     >{{ .Text }}</a
                 >
