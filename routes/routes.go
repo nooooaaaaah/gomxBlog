@@ -44,9 +44,18 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 		handlers.BlogHandler.BlogByID(w, r)
 	})
 
+	// robot and sitemap
+	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "robots.txt")
+	})
+	mux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "sitemap.xml")
+	})
+
 	// Serve static files
 	fileServer := http.FileServer(http.Dir("ui/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	logger.LogInfo.Println("static files served")
+
 	return mux
 }

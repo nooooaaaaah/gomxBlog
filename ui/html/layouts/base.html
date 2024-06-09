@@ -4,14 +4,48 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{.Title}}</title>
-        <!-- Your custom Highlight.js theme -->
-        <link rel="stylesheet" href="/static/css/custom-hljs-theme.css" />
-        <!-- Highlight.js styles -->
+
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Noah Fences but..." />
+        <meta
+            name="keywords"
+            content="law blog, bird law, legal advice, legal news"
+        />
+        <meta name="author" content="Bird Law Blog" />
+        <link rel="canonical" href="https://blog.birdlaw.uk" />
+
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:title" content="{{.Title}}" />
+        <meta property="og:description" content="Noah Fences but..." />
+        <meta
+            property="og:image"
+            content="https://blog.birdlaw.uk/static/static/icons/favicon.svg"
+        />
+        <meta property="og:url" content="https://blog.birdlaw.uk" />
+        <meta property="og:type" content="article" />
+
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{.Title}}" />
+        <meta name="twitter:description" content="Noah Fences but..." />
+        <meta
+            name="twitter:image"
+            content="https://blog.birdlaw.uk/static/icons/favicon.svg"
+        />
+
+        <!-- Favicon -->
+        <link rel="icon" href="/static/icons/favicon.svg" type="image/x-icon" />
+
+        <!-- Custom Highlight.js Theme -->
+        <link rel="stylesheet" href="/static/css/hjs.css" />
+
+        <!-- Highlight.js Styles -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"
         />
-        <!-- Other scripts and styles -->
+
+        <!-- Custom Styles -->
         <link rel="stylesheet" href="/static/css/site.css" />
         <link rel="stylesheet" href="/static/css/hjs.css" />
     </head>

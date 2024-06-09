@@ -38,6 +38,7 @@ func main() {
 		"ui/html/layouts/base.html",
 		partials...,
 	)
+
 	blogService := blog.NewBlogService()
 	homeService := home.NewHomeService(blogService)
 	homeHandler := home.NewHomeHandler(homeService, baseHandler)
