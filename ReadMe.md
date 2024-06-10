@@ -1,6 +1,6 @@
 # Go HTMX Blog Template
 
-Welcome to the Go HTMX Blog Template! This project is designed as a simple, scalable, and easy-to-adapt template for building dynamic blogs using Go (Golang) with HTMX for enhancing interactivity without needing to write JavaScript.
+Welcome to another Go HTMX Blog! This project is designed as a simple, and easy-to-adapt example for building dynamic blogs using Go (Golang) with HTMX for enhancing interactivity without needing to write JavaScript.
 
 ## Features
 
