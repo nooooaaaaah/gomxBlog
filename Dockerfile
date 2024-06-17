@@ -28,6 +28,9 @@ RUN apk add --no-cache ca-certificates
 # Copy the built binary from the build stage
 COPY --from=build /bin/blog /bin/main
 
+COPY --from=build /app/robots.txt ./
+COPY --from=build /app/sitemap.xml ./
+
 # Copy static files and templates
 COPY --from=build /app/ui/static /ui/static
 COPY --from=build /app/ui/html/ /ui/html
