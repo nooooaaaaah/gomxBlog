@@ -45,10 +45,10 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 	})
 
 	// robot and sitemap
-	mux.HandleFunc("./robots.txt", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "robots.txt")
 	})
-	mux.HandleFunc("./sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "sitemap.xml")
 	})
 
