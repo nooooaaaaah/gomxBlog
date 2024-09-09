@@ -3,6 +3,7 @@ package logger
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
 var (
@@ -11,11 +12,19 @@ var (
 )
 
 func init() {
+	dirPath := "tmp"
+	filePath := filepath.Join(dirPath, "blog.log")
+
+	// Create the directory if it doesn't exist
+	if err := os.MkdirAll(dirPath, 0755); err != nil {
+		log.Fatalf("Could not create directory: %v", err)
+	}
+
 	// Check if the file exists, if not, create it
-	if _, err := os.Stat("tmp/blog.log"); os.IsNotExist(err) {
-		file, err := os.Create("tmp/blog.log")
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		file, err := os.Create(filePath)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("Could not create log file: %v", err)
 		}
 		file.Close()
 	}
