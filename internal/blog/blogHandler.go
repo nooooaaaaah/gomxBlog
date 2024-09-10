@@ -36,7 +36,7 @@ func NewBlogHandler(service *BlogService, baseHandler base.BaseHandlerInterface)
 func (h *BlogHandler) AllBlogs(w http.ResponseWriter, r *http.Request) {
 	posts, err := h.Service.GetAllPosts() // This should return []Post and error
 	if err != nil {
-		logger.LogError.Println("Error fetching blog posts: ", err)
+		logger.Error("Error fetching blog posts: %e", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -52,7 +52,7 @@ func (h *BlogHandler) BlogByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 	id, err := edgedb.ParseUUID(idStr)
 	if err != nil {
-		logger.LogError.Println("Invalid Blog Id: ", idStr)
+		logger.Error("Invalid Blog Id: %s", idStr)
 		http.Error(w, "Invalid blog ID", http.StatusBadRequest)
 		return
 	}
@@ -60,7 +60,7 @@ func (h *BlogHandler) BlogByID(w http.ResponseWriter, r *http.Request) {
 	post, err := h.Service.getPostByID(id)
 	if err != nil {
 		// Assuming getPostByID returns an error when the post is not found
-		logger.LogError.Println("Blog post not found")
+		logger.Error("Blog post not found")
 		http.Error(w, "Blog post not found", http.StatusNotFound)
 		return
 	}

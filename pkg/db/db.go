@@ -34,7 +34,7 @@ func GetPostByID(id edgedb.UUID) (*Post, error) {
 	}
 	err := Client.QuerySingle(context.Background(), query, &post, params)
 	if err != nil {
-		logger.LogError.Printf("Error getting post by ID: %v", err)
+		logger.Error("Error getting post by ID: %v", err)
 		return nil, err
 	}
 	return &post, nil
@@ -45,10 +45,10 @@ func GetPosts() ([]Post, error) {
 	query := "Select Post { id, title, content, description, link, published_on }"
 	err := Client.Query(context.Background(), query, &posts)
 	if err != nil {
-		logger.LogError.Println("getting posts from db failed, ", err)
+		logger.Error("getting posts from db failed, %v", err)
 		return nil, err
 	}
 	date, _ := posts[0].PublishedOn.Get()
-	logger.LogInfo.Printf("GetPosts results: %v, %v", posts, date)
+	logger.Info("GetPosts results: %v, %v", posts, date)
 	return posts, nil
 }

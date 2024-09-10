@@ -8,6 +8,7 @@ import (
 	"Blog/pkg/logger"
 	"Blog/routes"
 	"context"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,11 +20,15 @@ import (
 
 func initConfig() {
 	if err := godotenv.Load(); err != nil {
-		logger.LogError.Println("No .env file found")
+		logger.Error("No .env file found")
 	}
 }
 
 func main() {
+	err := logger.InitLogger("./logs", "app_logs.db")
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
 	initConfig()
 	db.InitEdgeDB()
 	defer db.CloseEdgeDB()
@@ -32,7 +37,7 @@ func main() {
 		"ui/html/layouts/header.html",
 		"ui/html/layouts/navbar.html",
 	}
-	logger.LogInfo.Println("Starting server...")
+	logger.Info("Starting server...")
 
 	baseHandler := base.NewBaseHandler(
 		"ui/html/layouts/base.html",
@@ -47,7 +52,7 @@ func main() {
 		HomeHandler: homeHandler,
 		BlogHandler: blogHandler,
 	}
-	logger.LogInfo.Println("Handlers registered")
+	logger.Info("Handlers registered")
 
 	mux := routes.SetupRoutes(handlers)
 	port := os.Getenv("PORT")
@@ -62,22 +67,22 @@ func main() {
 
 	go func() {
 		if err := server.ListenAndServe(); err != http.ErrServerClosed {
-			logger.LogError.Fatalf("Could not listen on %s: %v", port, err)
+			logger.Fatal("Could not listen on %s: %v", port, err)
 		}
 	}()
 
-	logger.LogInfo.Println("Server is running on port", port)
+	logger.Info("Server is running on port %s", port)
 
 	// Graceful shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	logger.LogInfo.Println("Shutting down server...")
+	logger.Info("Shutting down server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
-		logger.LogError.Fatalf("Server forced to shutdown: %v", err)
+		logger.Fatal("Server forced to shutdown: %v", err)
 	}
-	logger.LogInfo.Println("Server shutdown gracefully")
+	logger.Info("Server shutdown gracefully")
 }

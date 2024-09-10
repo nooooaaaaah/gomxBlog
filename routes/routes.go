@@ -16,31 +16,31 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 	mux := http.NewServeMux()
 	//HomeHandler routes
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		logger.LogInfo.Println("Serving the HomePage")
+		logger.Info("Serving the HomePage")
 		handlers.HomeHandler.HomePage(w, r)
 	})
 	mux.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
-		logger.LogInfo.Println("Serving the HomePage")
+		logger.Info("Serving the HomePage")
 		handlers.HomeHandler.HomePage(w, r)
 	})
 	mux.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
-		logger.LogInfo.Println("Serving the AboutPage")
+		logger.Info("Serving the AboutPage")
 		handlers.HomeHandler.AboutPage(w, r)
 	})
 	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		logger.LogInfo.Println("Serving the ContactPage")
+		logger.Info("Serving the ContactPage")
 		handlers.HomeHandler.ContactPage(w, r)
 	})
 
 	// BlogHandler routes
 	mux.HandleFunc("/blogs", func(w http.ResponseWriter, r *http.Request) {
-		logger.LogInfo.Println("Serving the Blogs page")
+		logger.Info("Serving the Blogs page")
 		handlers.BlogHandler.AllBlogs(w, r)
 	})
 	mux.HandleFunc("GET /blogs/{id}", func(w http.ResponseWriter, r *http.Request) {
 		// Retrieve the 'id' from the path
 		id := r.PathValue("id")
-		logger.LogInfo.Printf("Displaying blog post with ID: %s\n", id)
+		logger.Info("Displaying blog post with ID: %s\n", id)
 		handlers.BlogHandler.BlogByID(w, r)
 	})
 
@@ -55,7 +55,7 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 	// Serve static files
 	fileServer := http.FileServer(http.Dir("ui/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
-	logger.LogInfo.Println("static files served")
+	logger.Info("static files served")
 
 	return mux
 }

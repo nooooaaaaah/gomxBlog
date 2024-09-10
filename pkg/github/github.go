@@ -172,7 +172,7 @@ func GetGitHubProfile(username string) (*GitHubProfile, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&profile); err != nil {
 		return nil, fmt.Errorf("failed to decode GitHub profile JSON: %v", err)
 	}
-	logger.LogInfo.Printf("Fetched GitHub profile: %+v\n", profile)
+	logger.Info("Fetched GitHub profile: %+v\n", profile)
 	return &profile, nil
 }
 

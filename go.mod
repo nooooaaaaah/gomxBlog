@@ -5,6 +5,7 @@ go 1.22.2
 require (
 	github.com/edgedb/edgedb-go v0.17.1
 	github.com/joho/godotenv v1.5.1
+	github.com/mattn/go-sqlite3 v1.14.23
 	github.com/microcosm-cc/bluemonday v1.0.26
 	github.com/russross/blackfriday/v2 v2.1.0
 	golang.org/x/net v0.17.0

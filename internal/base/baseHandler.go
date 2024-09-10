@@ -37,7 +37,7 @@ func NewBaseHandler(baseTemplatePath string, partials ...string) BaseHandlerInte
 	allPaths := append([]string{baseTemplatePath}, partials...)
 	tmpl, err := template.ParseFiles(allPaths...)
 	if err != nil {
-		logger.LogError.Printf("Error parsing template files: %v", err)
+		logger.Error("Error parsing template files: %v", err)
 		return nil
 	}
 	return &BaseHandler{
@@ -47,11 +47,11 @@ func NewBaseHandler(baseTemplatePath string, partials ...string) BaseHandlerInte
 
 // Method to handle rendering logic for pages
 func (bh *BaseHandler) RenderPage(w http.ResponseWriter, r *http.Request, pageTitle string, contentTemplate *template.Template, partialData interface{}) {
-	logger.LogInfo.Printf("Rendering page: %s", pageTitle)
+	logger.Info("Rendering page: %s", pageTitle)
 	content, err := renderToString(contentTemplate, partialData)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		logger.LogError.Printf("Error rendering content: %v", err)
+		logger.Error("Error rendering content: %v", err)
 		return
 	}
 
@@ -74,10 +74,10 @@ func (bh *BaseHandler) RenderFullPage(w http.ResponseWriter, r *http.Request, pa
 		IsDev:       os.Getenv("GO_ENV") == "development",
 	}
 
-	logger.LogInfo.Printf("Rendering full page with title: %s", pageTitle)
+	logger.Info("Rendering full page with title: %s", pageTitle)
 	if err := bh.BaseTemplate.ExecuteTemplate(w, "base.html", data); err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		logger.LogError.Printf("Error executing base template: %v", err)
+		logger.Error("Error executing base template: %v", err)
 	}
 }
 
@@ -94,7 +94,7 @@ func getDefaultLinks() []Link {
 func renderToString(t *template.Template, data interface{}) (string, error) {
 	var buf bytes.Buffer
 	if err := t.Execute(&buf, data); err != nil {
-		logger.LogError.Printf("Error executing template to string: %v", err)
+		logger.Error("Error executing template to string: %v", err)
 		return "", err
 	}
 	return buf.String(), nil

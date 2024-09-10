@@ -27,7 +27,7 @@ func (s *HomeService) ghProfile() (*github.GitHubProfile, error) {
 	login := "nooooaaaaah"
 	ghPro, err := github.GetGitHubProfile(login)
 	if err != nil {
-		logger.LogError.Println("couldn't get gh profile: ", err)
+		logger.Error("couldn't get gh profile: ", err)
 		return nil, err
 	}
 	return ghPro, nil
@@ -37,7 +37,7 @@ func (s *HomeService) pinnedPosts() ([]github.Repo, error) {
 	login := "nooooaaaaah"
 	pinnedPosts, err := github.GetPinnedRepos(login)
 	if err != nil {
-		logger.LogError.Println("couldn't get pinned repos: ", err)
+		logger.Error("couldn't get pinned repos: ", err)
 		return nil, err
 	}
 	return pinnedPosts, nil
@@ -73,7 +73,7 @@ func (s *HomeService) GetCachedGhInfo() (*GhInfoCache, error) {
 func (s *HomeService) getBlogs() ([]db.Post, error) {
 	posts, err := s.bs.GetAllPosts()
 	if err != nil {
-		logger.LogError.Println("Error Getting posts for homepage:", err)
+		logger.Error("Error Getting posts for homepage:", err)
 	}
 	return posts, nil
 }

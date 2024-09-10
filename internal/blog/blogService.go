@@ -32,7 +32,7 @@ func (s *BlogService) GetAllPosts() ([]db.Post, error) {
 	// Fetch new posts from the database
 	posts, err := db.GetPosts()
 	if err != nil {
-		logger.LogError.Println("Error getting all posts: ", err)
+		logger.Error("Error getting all posts: %e", err)
 		return nil, err
 	}
 
@@ -54,7 +54,7 @@ func (s *BlogService) getPostByID(id edgedb.UUID) (*db.Post, error) {
 	// If not found in cache, fetch from the database
 	post, err := db.GetPostByID(id)
 	if err != nil {
-		logger.LogError.Println("Error getting post by ID:", err)
+		logger.Error("Error getting post by ID: %v", err)
 		return nil, err
 	}
 
