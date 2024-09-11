@@ -1,84 +1,228 @@
-<div class="relative py-10">
-    <div class="grid items-center justify-center text-center">
+<div class="text-peach-200 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
         <h1
-            class="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-peach-300 via-peach-200 font-bold sm:text-4xl md:text-6xl tracking-tighter mb-6"
+            class="text-2xl md:text-3xl font-bold text-center mb-6 bg-gradient-to-r from-peach-300 via-peach-200 to-peach-300 bg-clip-text text-transparent"
         >
             Upload Blog Post
         </h1>
-        <form
-            hx-post="/upload"
-            hx-target="#result"
-            class="space-y-4 bg-midnight-900 bg-opacity-35 shadow-2xl rounded-lg px-8 pt-6 pb-8 mb-4 max-w-2xl mx-auto animate-grow backdrop-blur-lg"
-        >
-            <div>
-                <label
-                    for="title"
-                    class="block text-peach-300 text-sm font-bold mb-2"
-                    >Title</label
+        <div class="bg-midnight-800 shadow-2xl rounded-lg p-6">
+            <div
+                class="flex items-center justify-center mb-4 text-xs text-peach-200 opacity-70"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-3 w-3 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                 >
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
-                />
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                </svg>
+                <span id="current-date" aria-live="polite"></span>
             </div>
-            <div>
-                <label
-                    for="description"
-                    class="block text-peach-300 text-sm font-bold mb-2"
-                    >Description</label
-                >
-                <textarea
-                    id="description"
-                    name="description"
-                    required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
-                ></textarea>
-            </div>
-            <div>
-                <label
-                    for="date"
-                    class="block text-peach-300 text-sm font-bold mb-2"
-                    >Date</label
-                >
-                <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
-                />
-            </div>
-            <div>
-                <label
-                    for="markdown"
-                    class="block text-peach-300 text-sm font-bold mb-2"
-                    >Markdown File</label
-                >
-                <input
-                    type="file"
-                    id="markdown"
-                    name="markdown"
-                    accept=".md"
-                    required
-                    hx-post="/preview"
-                    hx-target="#preview"
-                    hx-trigger="change"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
-                />
-            </div>
-            <div id="preview" class="mt-4 text-purp-200"></div>
-            <div>
-                <button
-                    type="submit"
-                    class="bg-peach-300 hover:bg-peach-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300"
-                >
-                    Upload Blog Post
-                </button>
-            </div>
-        </form>
-        <div id="result" class="mt-4 text-purp-200"></div>
+            <form hx-post="/upload" hx-target="#result" class="space-y-4">
+                <div>
+                    <label
+                        for="title"
+                        class="block text-peach-300 text-xs font-medium mb-1"
+                        >Title</label
+                    >
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        required
+                        class="w-full text-purp-100 px-3 py-2 text-sm bg-midnight-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-peach-400 focus:border-transparent transition duration-300"
+                        aria-describedby="title-description"
+                    />
+                    <p
+                        id="title-description"
+                        class="mt-1 text-xs text-peach-200 opacity-70"
+                    >
+                        Enter the title of your blog post
+                    </p>
+                </div>
+                <div>
+                    <label
+                        for="description"
+                        class="block text-purp-100 text-xs font-medium mb-1"
+                        >Description</label
+                    >
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="2"
+                        required
+                        class="w-full px-3 py-2 text-sm bg-midnight-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-peach-400 focus:border-transparent transition duration-300 resize-none"
+                        aria-describedby="description-info"
+                    ></textarea>
+                    <p
+                        id="description-info"
+                        class="mt-1 text-xs text-peach-200 opacity-70"
+                    >
+                        Provide a brief description of your blog post
+                    </p>
+                </div>
+                <div>
+                    <label
+                        for="markdown"
+                        class="block text-peach-300 text-xs font-medium mb-1"
+                        >Markdown File</label
+                    >
+                    <div
+                        class="mt-1 flex justify-center px-4 py-3 border-2 border-peach-300 border-dashed rounded-md"
+                        id="dropZone"
+                    >
+                        <div class="space-y-1 text-center">
+                            <svg
+                                class="mx-auto h-8 w-8 text-peach-300"
+                                stroke="currentColor"
+                                fill="none"
+                                viewBox="0 0 48 48"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <div class="flex text-xs text-peach-200">
+                                <label
+                                    for="markdown"
+                                    class="relative cursor-pointer rounded-md font-medium text-peach-300 hover:text-peach-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-peach-400"
+                                >
+                                    <span>Upload a file</span>
+                                    <input
+                                        id="markdown"
+                                        name="markdown"
+                                        type="file"
+                                        accept=".md"
+                                        class="sr-only"
+                                        required
+                                        hx-post="/preview"
+                                        hx-target="#preview"
+                                        hx-trigger="change"
+                                    />
+                                </label>
+                                <p class="pl-1">or drag and drop</p>
+                            </div>
+                            <p class="text-xs text-peach-200">
+                                Markdown files only (.md)
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        id="file-info"
+                        class="mt-2 flex items-center justify-between text-xs text-peach-200 hidden"
+                    >
+                        <span id="file-name"></span>
+                        <button
+                            type="button"
+                            id="remove-file"
+                            class="font-medium text-peach-300 hover:text-peach-400"
+                        >
+                            Remove
+                        </button>
+                    </div>
+                </div>
+                <div id="preview" class="mt-3 text-xs" aria-live="polite"></div>
+                <div>
+                    <button
+                        type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-midnight-900 bg-peach-300 hover:bg-peach-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-peach-400 transition duration-300 ease-in-out transform hover:scale-105"
+                    >
+                        Upload Blog Post
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div
+            id="result"
+            class="mt-4 text-center text-sm"
+            aria-live="polite"
+        ></div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentDateSpan = document.getElementById("current-date");
+            const fileInput = document.getElementById("markdown");
+            const fileInfo = document.getElementById("file-info");
+            const fileName = document.getElementById("file-name");
+            const removeFile = document.getElementById("remove-file");
+            const dropZone = document.getElementById("dropZone");
+
+            function updateDate() {
+                const currentDate = new Date();
+                const options = {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                };
+                currentDateSpan.textContent = currentDate.toLocaleDateString(
+                    "en-US",
+                    options,
+                );
+            }
+
+            updateDate();
+            setInterval(updateDate, 60000);
+
+            function handleFileSelection(file) {
+                if (file) {
+                    fileName.textContent = file.name;
+                    fileInfo.classList.remove("hidden");
+                    dropZone.classList.add(
+                        "border-peach-400",
+                        "bg-midnight-700",
+                    );
+                }
+            }
+
+            fileInput.addEventListener("change", function (e) {
+                handleFileSelection(this.files[0]);
+            });
+
+            removeFile.addEventListener("click", function (e) {
+                e.preventDefault();
+                fileInput.value = "";
+                fileInfo.classList.add("hidden");
+                dropZone.classList.remove(
+                    "border-peach-400",
+                    "bg-midnight-700",
+                );
+            });
+
+            dropZone.addEventListener("dragover", function (e) {
+                e.preventDefault();
+                this.classList.add("border-peach-400", "bg-midnight-700");
+            });
+
+            dropZone.addEventListener("dragleave", function (e) {
+                e.preventDefault();
+                this.classList.remove("border-peach-400", "bg-midnight-700");
+            });
+
+            dropZone.addEventListener("drop", function (e) {
+                e.preventDefault();
+                this.classList.remove("border-peach-400", "bg-midnight-700");
+
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelection(e.dataTransfer.files[0]);
+                    fileInput.dispatchEvent(new Event("change"));
+                }
+            });
+        });
+    </script>
 </div>
