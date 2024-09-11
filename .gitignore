@@ -56,3 +56,4 @@ coverage.txt
 
 # Ignore private build configs
 /private/
+logs/app_logs.db
