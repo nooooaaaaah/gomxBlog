@@ -39,6 +39,11 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 		handlers.PostHandler.ShowUploadPage(w, r)
 	})
 
+	mux.HandleFunc("POST /upload", func(w http.ResponseWriter, r *http.Request) {
+		logger.Info("Trying to upload eh")
+		handlers.PostHandler.AddPost(w,r)
+	})
+
 	// BlogHandler routes
 	mux.HandleFunc("/blogs", func(w http.ResponseWriter, r *http.Request) {
 		logger.Info("Serving the Blogs page")
