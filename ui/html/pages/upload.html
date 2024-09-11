@@ -1,0 +1,84 @@
+<div class="relative py-10">
+    <div class="grid items-center justify-center text-center">
+        <h1
+            class="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-peach-300 via-peach-200 font-bold sm:text-4xl md:text-6xl tracking-tighter mb-6"
+        >
+            Upload Blog Post
+        </h1>
+        <form
+            hx-post="/upload"
+            hx-target="#result"
+            class="space-y-4 bg-midnight-900 bg-opacity-35 shadow-2xl rounded-lg px-8 pt-6 pb-8 mb-4 max-w-2xl mx-auto animate-grow backdrop-blur-lg"
+        >
+            <div>
+                <label
+                    for="title"
+                    class="block text-peach-300 text-sm font-bold mb-2"
+                    >Title</label
+                >
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
+                />
+            </div>
+            <div>
+                <label
+                    for="description"
+                    class="block text-peach-300 text-sm font-bold mb-2"
+                    >Description</label
+                >
+                <textarea
+                    id="description"
+                    name="description"
+                    required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
+                ></textarea>
+            </div>
+            <div>
+                <label
+                    for="date"
+                    class="block text-peach-300 text-sm font-bold mb-2"
+                    >Date</label
+                >
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
+                />
+            </div>
+            <div>
+                <label
+                    for="markdown"
+                    class="block text-peach-300 text-sm font-bold mb-2"
+                    >Markdown File</label
+                >
+                <input
+                    type="file"
+                    id="markdown"
+                    name="markdown"
+                    accept=".md"
+                    required
+                    hx-post="/preview"
+                    hx-target="#preview"
+                    hx-trigger="change"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-purp-200"
+                />
+            </div>
+            <div id="preview" class="mt-4 text-purp-200"></div>
+            <div>
+                <button
+                    type="submit"
+                    class="bg-peach-300 hover:bg-peach-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300"
+                >
+                    Upload Blog Post
+                </button>
+            </div>
+        </form>
+        <div id="result" class="mt-4 text-purp-200"></div>
+    </div>
+</div>

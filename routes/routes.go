@@ -1,6 +1,7 @@
 package routes
 
 import (
+	addpost "Blog/internal/addPost"
 	"Blog/internal/blog"
 	"Blog/internal/home"
 	"Blog/pkg/logger"
@@ -10,6 +11,7 @@ import (
 type AppHandlers struct {
 	HomeHandler *home.HomeHandler
 	BlogHandler *blog.BlogHandler
+	PostHandler *addpost.PostHandler
 }
 
 func SetupRoutes(handlers AppHandlers) *http.ServeMux {
@@ -30,6 +32,11 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		logger.Info("Serving the ContactPage")
 		handlers.HomeHandler.ContactPage(w, r)
+	})
+
+	mux.HandleFunc("/addapost", func(w http.ResponseWriter, r *http.Request) {
+		logger.Info("Serving the Upload page")
+		handlers.PostHandler.ShowUploadPage(w, r)
 	})
 
 	// BlogHandler routes

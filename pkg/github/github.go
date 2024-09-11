@@ -186,7 +186,9 @@ func GetPinnedRepos(username string) ([]Repo, error) {
 		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
 
-	req.Header.Set("Authorization", "Bearer "+os.Getenv("GITHUB_TOKEN"))
+	token := os.Getenv("GITHUB_TOKEN")
+	logger.Info("GitHub Token: %s", token)
+	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}

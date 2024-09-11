@@ -3,20 +3,22 @@ package blog
 import (
 	"Blog/pkg/db"
 	"Blog/pkg/logger"
+	"context"
 	"time"
 
-	"github.com/edgedb/edgedb-go"
+	"github.com/google/uuid"
 )
 
 // BlogService implements the BlogService interface
 type BlogService struct {
+	queries     *db.Queries
 	LastFetch   time.Time
 	CachedPosts []db.Post
 }
 
 // NewBlogService creates a new blog service
-func NewBlogService() *BlogService {
-	return &BlogService{}
+func NewBlogService(queries *db.Queries) *BlogService {
+	return &BlogService{queries: queries}
 }
 
 func (s *BlogService) GetAllPosts() ([]db.Post, error) {
@@ -30,7 +32,7 @@ func (s *BlogService) GetAllPosts() ([]db.Post, error) {
 	}
 
 	// Fetch new posts from the database
-	posts, err := db.GetPosts()
+	posts, err := s.queries.ListPosts(context.Background(), 100)
 	if err != nil {
 		logger.Error("Error getting all posts: %e", err)
 		return nil, err
@@ -43,22 +45,22 @@ func (s *BlogService) GetAllPosts() ([]db.Post, error) {
 	return posts, nil
 }
 
-func (s *BlogService) getPostByID(id edgedb.UUID) (*db.Post, error) {
+func (s *BlogService) getPostByID(id uuid.UUID) (*db.Post, error) {
 	// First check if the post is in the cached posts
 	for _, post := range s.CachedPosts {
-		if post.Id == id {
+		if post.ID == id {
 			return &post, nil // Return a pointer to the cached post
 		}
 	}
 
 	// If not found in cache, fetch from the database
-	post, err := db.GetPostByID(id)
+	post, err := s.queries.GetPost(context.Background(), id.String())
 	if err != nil {
 		logger.Error("Error getting post by ID: %v", err)
 		return nil, err
 	}
 
 	// Update the cache with this newly fetched post
-	s.CachedPosts = append(s.CachedPosts, *post)
-	return post, nil
+	s.CachedPosts = append(s.CachedPosts, post)
+	return &post, nil
 }

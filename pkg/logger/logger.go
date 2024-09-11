@@ -3,11 +3,11 @@ package logger
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sync"
 
+	"github.com/charmbracelet/log"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -81,8 +81,17 @@ func logMessage(level LogLevel, message string) {
 		log.Printf("Failed to log message: %v", err)
 	}
 
-	if level == FATAL {
-		os.Exit(1)
+	switch level {
+	case INFO:
+		log.Info(message)
+	case ERROR:
+		log.Error(message)
+	case DEBUG:
+		log.Debug(message)
+	case WARN:
+		log.Warn(message)
+	case FATAL:
+		log.Fatal(message)
 	}
 }
 

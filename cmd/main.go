@@ -1,10 +1,11 @@
 package main
 
 import (
+	"Blog/dbschema"
+	addpost "Blog/internal/addPost"
 	"Blog/internal/base"
 	"Blog/internal/blog"
 	"Blog/internal/home"
-	"Blog/pkg/db"
 	"Blog/pkg/logger"
 	"Blog/routes"
 	"context"
@@ -30,8 +31,7 @@ func main() {
 		log.Fatalf("Failed to initialize logger: %v", err)
 	}
 	initConfig()
-	db.InitEdgeDB()
-	defer db.CloseEdgeDB()
+
 	partials := []string{
 		"ui/html/layouts/footer.html",
 		"ui/html/layouts/header.html",
@@ -44,13 +44,20 @@ func main() {
 		partials...,
 	)
 
-	blogService := blog.NewBlogService()
+	queries, blogDB := dbschema.ConnectCreateDoShitWithDB()
+	defer blogDB.Close()
+
+	blogService := blog.NewBlogService(queries)
 	homeService := home.NewHomeService(blogService)
+	uploadService := addpost.NewPostSerivce(*queries)
+
 	homeHandler := home.NewHomeHandler(homeService, baseHandler)
-	blogHandler := blog.NewBlogHandler(blog.NewBlogService(), baseHandler)
+	blogHandler := blog.NewBlogHandler(blogService, baseHandler)
+	uploadHandler := addpost.NewPostHandler(uploadService, baseHandler)
 	handlers := routes.AppHandlers{
 		HomeHandler: homeHandler,
 		BlogHandler: blogHandler,
+		PostHandler: uploadHandler,
 	}
 	logger.Info("Handlers registered")
 

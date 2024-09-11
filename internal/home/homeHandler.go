@@ -40,14 +40,14 @@ func NewHomeHandler(service *HomeService, baseHandler base.BaseHandlerInterface)
 func (h *HomeHandler) HomePage(w http.ResponseWriter, r *http.Request) {
 	ghInfo, err := h.Service.GetCachedGhInfo()
 	if err != nil {
-		logger.Error("Error getting GitHub info:", err)
+		logger.Error("Error getting GitHub info: %e", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	posts, err := h.Service.getBlogs()
 	if err != nil {
-		logger.Error("Error getting blog posts:", err)
+		logger.Error("Error getting blog posts: %e", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

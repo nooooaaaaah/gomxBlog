@@ -7,7 +7,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/edgedb/edgedb-go"
+	"github.com/google/uuid"
 )
 
 type PageData struct {
@@ -50,7 +50,7 @@ func (h *BlogHandler) AllBlogs(w http.ResponseWriter, r *http.Request) {
 
 func (h *BlogHandler) BlogByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
-	id, err := edgedb.ParseUUID(idStr)
+	id, err := uuid.Parse(idStr)
 	if err != nil {
 		logger.Error("Invalid Blog Id: %s", idStr)
 		http.Error(w, "Invalid blog ID", http.StatusBadRequest)
