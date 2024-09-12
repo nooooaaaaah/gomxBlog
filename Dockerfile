@@ -33,7 +33,7 @@ COPY --from=build /app/sitemap.xml ./
 
 # Copy static files and templates
 COPY --from=build /app/ui/static /ui/static
-COPY --from=build /app/ui/html/ /ui/html
+COPY --from=build /app/cmd/web/html/ /cmd/web/html
 RUN rm /ui/static/js/refreshMeDaddy.js
 
 # Expose the application port

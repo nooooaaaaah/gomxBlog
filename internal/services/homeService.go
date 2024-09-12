@@ -1,8 +1,7 @@
-package home
+package services
 
 import (
-	"Blog/internal/blog"
-	"Blog/pkg/db"
+	"Blog/internal/db"
 	"Blog/pkg/github"
 	"Blog/pkg/logger"
 	"time"
@@ -11,7 +10,7 @@ import (
 type HomeService struct {
 	lastFetch time.Time
 	cachedGh  GhInfoCache
-	bs        *blog.BlogService
+	bs        *BlogService
 }
 
 type GhInfoCache struct {
@@ -19,7 +18,7 @@ type GhInfoCache struct {
 	PinnedRepos []github.Repo
 }
 
-func NewHomeService(bs *blog.BlogService) *HomeService {
+func NewHomeService(bs *BlogService) *HomeService {
 	return &HomeService{bs: bs}
 }
 
@@ -33,7 +32,7 @@ func (s *HomeService) ghProfile() (*github.GitHubProfile, error) {
 	return ghPro, nil
 }
 
-func (s *HomeService) pinnedPosts() ([]github.Repo, error) {
+func (s *HomeService) PinnedPosts() ([]github.Repo, error) {
 	login := "nooooaaaaah"
 	pinnedPosts, err := github.GetPinnedRepos(login)
 	if err != nil {
@@ -55,7 +54,7 @@ func (s *HomeService) GetCachedGhInfo() (*GhInfoCache, error) {
 		return nil, err
 	}
 
-	pinnedRepos, err := s.pinnedPosts()
+	pinnedRepos, err := s.PinnedPosts()
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +69,7 @@ func (s *HomeService) GetCachedGhInfo() (*GhInfoCache, error) {
 	return &s.cachedGh, nil
 }
 
-func (s *HomeService) getBlogs() ([]db.Post, error) {
+func (s *HomeService) GetBlogs() ([]db.Post, error) {
 	posts, err := s.bs.GetAllPosts()
 	if err != nil {
 		logger.Error("Error Getting posts for homepage: %e", err)

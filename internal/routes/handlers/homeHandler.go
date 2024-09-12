@@ -1,8 +1,8 @@
-package home
+package handlers
 
 import (
-	"Blog/internal/base" // Make sure the import path is correct
-	"Blog/pkg/db"
+	"Blog/internal/db"
+	"Blog/internal/services"
 	"Blog/pkg/github"
 	"Blog/pkg/logger"
 	"html/template"
@@ -11,15 +11,15 @@ import (
 
 var (
 	homeTemplate = template.Must(template.ParseFiles(
-		"ui/html/pages/home.html",
-		"ui/html/partials/pinnedRepos.html"))
-	aboutTemplate   = template.Must(template.ParseFiles("ui/html/pages/about.html"))
-	contactTemplate = template.Must(template.ParseFiles("ui/html/pages/contact.html"))
+		"cmd/web/html/pages/home.html",
+		"cmd/web/html/partials/pinnedRepos.html"))
+	aboutTemplate   = template.Must(template.ParseFiles("cmd/web/html/pages/about.html"))
+	contactTemplate = template.Must(template.ParseFiles("cmd/web/html/pages/contact.html"))
 )
 
 type HomeHandler struct {
-	BaseHandler base.BaseHandlerInterface
-	Service     *HomeService
+	BaseHandler BaseHandlerInterface
+	Service     *services.HomeService
 }
 
 type hompageData struct {
@@ -28,7 +28,7 @@ type hompageData struct {
 	Posts       []db.Post
 }
 
-func NewHomeHandler(service *HomeService, baseHandler base.BaseHandlerInterface) *HomeHandler {
+func NewHomeHandler(service *services.HomeService, baseHandler BaseHandlerInterface) *HomeHandler {
 	return &HomeHandler{
 		BaseHandler: baseHandler,
 		Service:     service,
@@ -45,7 +45,7 @@ func (h *HomeHandler) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	posts, err := h.Service.getBlogs()
+	posts, err := h.Service.GetBlogs()
 	if err != nil {
 		logger.Error("Error getting blog posts: %e", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

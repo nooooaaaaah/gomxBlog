@@ -1,7 +1,7 @@
-package blog
+package services
 
 import (
-	"Blog/pkg/db"
+	"Blog/internal/db"
 	"Blog/pkg/logger"
 	"context"
 	"time"
@@ -45,7 +45,7 @@ func (s *BlogService) GetAllPosts() ([]db.Post, error) {
 	return posts, nil
 }
 
-func (s *BlogService) getPostByID(id uuid.UUID) (*db.Post, error) {
+func (s *BlogService) GetPostByID(id uuid.UUID) (*db.Post, error) {
 	// First check if the post is in the cached posts
 	for _, post := range s.CachedPosts {
 		if post.ID == id {

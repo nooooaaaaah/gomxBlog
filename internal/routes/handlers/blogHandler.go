@@ -1,8 +1,8 @@
-package blog
+package handlers
 
 import (
-	"Blog/internal/base"
-	"Blog/pkg/db"
+	"Blog/internal/db"
+	"Blog/internal/services"
 	"Blog/pkg/logger"
 	"html/template"
 	"net/http"
@@ -10,23 +10,23 @@ import (
 	"github.com/google/uuid"
 )
 
-type PageData struct {
+type pageData struct {
 	Posts []db.Post
 }
 
 var (
-	allBlogsTemplate = template.Must(template.ParseFiles("ui/html/pages/blogs.html"))
-	blogTemplate     = template.Must(template.ParseFiles("ui/html/pages/blog.html"))
+	allBlogsTemplate = template.Must(template.ParseFiles("cmd/web/html/pages/blogs.html"))
+	blogTemplate     = template.Must(template.ParseFiles("cmd/web/html/pages/blog.html"))
 )
 
 // BlogHandler holds dependencies for blog routes
 type BlogHandler struct {
-	BaseHandler base.BaseHandlerInterface
-	Service     *BlogService
+	BaseHandler BaseHandlerInterface
+	Service     *services.BlogService
 }
 
 // NewBlogHandler creates a new blog handler
-func NewBlogHandler(service *BlogService, baseHandler base.BaseHandlerInterface) *BlogHandler {
+func NewBlogHandler(service *services.BlogService, baseHandler BaseHandlerInterface) *BlogHandler {
 	return &BlogHandler{
 		BaseHandler: baseHandler,
 		Service:     service,
@@ -41,7 +41,7 @@ func (h *BlogHandler) AllBlogs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageData := PageData{
+	pageData := pageData{
 		Posts: posts,
 	}
 
@@ -57,7 +57,7 @@ func (h *BlogHandler) BlogByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	post, err := h.Service.getPostByID(id)
+	post, err := h.Service.GetPostByID(id)
 	if err != nil {
 		// Assuming getPostByID returns an error when the post is not found
 		logger.Error("Blog post not found")

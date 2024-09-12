@@ -1,22 +1,22 @@
-package addpost
+package handlers
 
 import (
-	"Blog/internal/base"
-	"Blog/pkg/db"
+	"Blog/internal/db"
+	"Blog/internal/services"
 	"html/template"
 	"io"
 	"net/http"
 	"time"
 )
 
-var uploadTemplate = template.Must(template.ParseFiles("ui/html/pages/upload.html"))
+var uploadTemplate = template.Must(template.ParseFiles("cmd/web/html/pages/upload.html"))
 
 type PostHandler struct {
-	BaseHandler base.BaseHandlerInterface
-	Service     *PostService
+	BaseHandler BaseHandlerInterface
+	Service     *services.PostService
 }
 
-func NewPostHandler(service *PostService, baseHandler base.BaseHandlerInterface) *PostHandler {
+func NewPostHandler(service *services.PostService, baseHandler BaseHandlerInterface) *PostHandler {
 	return &PostHandler{
 		BaseHandler: baseHandler,
 		Service:     service,

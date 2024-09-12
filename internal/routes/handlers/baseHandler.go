@@ -1,4 +1,4 @@
-package base
+package handlers
 
 import (
 	"Blog/pkg/logger"

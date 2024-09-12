@@ -5,7 +5,7 @@ tmp_dir = "tmp"
 [build]
 args_bin = []
 bin = "./tmp/main"
-cmd = "go build -o ./tmp/main ./cmd"
+cmd = "go build -o ./tmp/main ./cmd/api"
 delay = 1000
 exclude_dir = ["assets", "tmp", "vendor", "testdata"]
 exclude_file = []
@@ -22,7 +22,7 @@ poll = false
 poll_interval = 0
 post_cmd = []
 pre_cmd = [
-    "npx tailwindcss --config ./configs/tailwind.config.js -i ./ui/static/css/input.css -o ./ui/static/css/site.css --minify",
+    "npx tailwindcss --config tailwind.config.js -i ./cmd/web/static/css/input.css -o ./cmd/web/static/css/site.css --minify",
 ]
 rerun = false
 rerun_delay = 500

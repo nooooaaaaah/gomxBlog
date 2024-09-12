@@ -1,7 +1,7 @@
 package dbschema
 
 import (
-	"Blog/pkg/db"
+	"Blog/internal/db"
 	"Blog/pkg/logger"
 	"context"
 	"database/sql"

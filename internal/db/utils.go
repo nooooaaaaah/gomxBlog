@@ -1,7 +1,7 @@
 package db
 
 import (
-	"Blog/pkg/utils"
+	"Blog/pkg/markdown"
 	"html/template"
 )
 
@@ -11,5 +11,5 @@ func (p *Post) PublishedDate() string {
 }
 
 func (p *Post) HtmlContent() template.HTML {
-	return utils.MdToHTML(p.Content)
+	return markdown.MdToHTML(p.Content)
 }

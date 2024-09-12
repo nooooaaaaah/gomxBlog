@@ -1,7 +1,7 @@
-package addpost
+package services
 
 import (
-	"Blog/pkg/db"
+	"Blog/internal/db"
 	"context"
 
 	"github.com/google/uuid"

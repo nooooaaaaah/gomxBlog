@@ -1,17 +1,15 @@
 package routes
 
 import (
-	addpost "Blog/internal/addPost"
-	"Blog/internal/blog"
-	"Blog/internal/home"
+	handler "Blog/internal/routes/handlers"
 	"Blog/pkg/logger"
 	"net/http"
 )
 
 type AppHandlers struct {
-	HomeHandler *home.HomeHandler
-	BlogHandler *blog.BlogHandler
-	PostHandler *addpost.PostHandler
+	HomeHandler *handler.HomeHandler
+	BlogHandler *handler.BlogHandler
+	PostHandler *handler.PostHandler
 }
 
 func SetupRoutes(handlers AppHandlers) *http.ServeMux {
@@ -41,7 +39,7 @@ func SetupRoutes(handlers AppHandlers) *http.ServeMux {
 
 	mux.HandleFunc("POST /upload", func(w http.ResponseWriter, r *http.Request) {
 		logger.Info("Trying to upload eh")
-		handlers.PostHandler.AddPost(w,r)
+		handlers.PostHandler.AddPost(w, r)
 	})
 
 	// BlogHandler routes

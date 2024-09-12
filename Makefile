@@ -15,7 +15,7 @@ build-go:
 # Compile Tailwind CSS
 build-css:
 	@echo "Compiling Tailwind CSS..."
-	@npx tailwindcss -i ./ui/static/css/input.css -o ./ui/static/css/site.css --config ./configs/tailwind.config.js --minify || { echo "CSS compilation failed"; exit 1; }
+	@npx tailwindcss -i ./cmd/web/static/css/input.css -o ./cmd/web/static/css/site.css --config tailwind.config.js --minify || { echo "CSS compilation failed"; exit 1; }
 
 build-docker:
 	@echo "Building Docker container..."
@@ -40,7 +40,7 @@ watch: prepare watch-go watch-refresh watch-css
 # Watches for UI changes to reload the browser
 watch-refresh:
 	@echo "Starting RefreshMeDaddy for live browser reloading..."
-	@RefreshMeDaddy -p 6900 -w ./ui -v & echo $$! >> .pidfile
+	@RefreshMeDaddy -p 6900 -w ./cmd/web -v & echo $$! >> .pidfile
 	@if [ $$? -eq 0 ]; then \
 					echo "RefreshMeDaddy started on port 6900..."; \
 	else \
@@ -50,7 +50,7 @@ watch-refresh:
 # Watches Go files for changes
 watch-go:
 	@echo "Watching Go files for changes..."
-	@air -c ./configs/.air.toml & echo $$! >> .pidfile
+	@air -c .air.toml & echo $$! >> .pidfile
 	@echo "Air started..."
 
 # Watches CSS files for changes
@@ -62,7 +62,7 @@ watch-css:
 # Clean up builds and logs
 clean:
 	@echo "Cleaning up..."
-	@rm -rf ./bin/* ./ui/static/css/site.css tmp/* .pidfile
+	@rm -rf ./bin/* ./cmd/web/static/css/site.css tmp/* .pidfile
 	@echo "Clean completed."
 
 # Stops all processes started for development
